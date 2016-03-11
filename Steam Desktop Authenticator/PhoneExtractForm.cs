@@ -8,10 +8,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class PhoneExtractForm : Form
+    public partial class PhoneExtractForm : MaterialForm
     {
         private PhoneBridge bridge;
         private ManualResetEventSlim mreWait = new ManualResetEventSlim(false);
@@ -19,9 +21,12 @@ namespace Steam_Desktop_Authenticator
         private string SelectedSteamID = "*";
         public SteamAuth.SteamGuardAccount Result;
 
+        private readonly MaterialSkinManager materialSkinManager;
         public PhoneExtractForm()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
         }
 
         private void PhoneExtractForm_Load(object sender, EventArgs e)

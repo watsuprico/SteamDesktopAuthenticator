@@ -5,6 +5,8 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -49,6 +51,8 @@ namespace Steam_Desktop_Authenticator
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.Run(new SetTheme());
 
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)

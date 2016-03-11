@@ -7,10 +7,13 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Net;
 using Newtonsoft.Json;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MaterialForm
     {
         private SteamGuardAccount currentAccount = null;
         private SteamGuardAccount[] allAccounts;
@@ -24,10 +27,17 @@ namespace Steam_Desktop_Authenticator
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
 
+        private readonly MaterialSkinManager materialSkinManager;
 
         public MainForm()
         {
             InitializeComponent();
+
+            // Initialize MaterialSkinManager
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+
+            this.MinimumSize = new System.Drawing.Size(371, 299);
         }
 
 
@@ -35,7 +45,7 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
+            this.updateButton.Text = String.Format("Check for an update | v{0}", Application.ProductVersion);
             this.manifest = Manifest.GetManifest();
 
             // Make sure we don't show that welcome dialog again
@@ -60,7 +70,7 @@ namespace Steam_Desktop_Authenticator
                 btnManageEncryption.Text = "Setup Encryption";
             }
 
-            btnManageEncryption.Enabled = manifest.Entries.Count > 0;
+            menuLoginAgain.Enabled = menuRefreshSession.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
             loadSettings();
             loadAccountsList();
@@ -100,13 +110,12 @@ namespace Steam_Desktop_Authenticator
         {
             if (currentAccount == null) return;
 
-            string oText = btnTradeConfirmations.Text;
-            btnTradeConfirmations.Text = "Loading...";
+            statusBar.Value = 50;
             await currentAccount.RefreshSessionAsync();
-            btnTradeConfirmations.Text = oText;
 
             try
             {
+                statusBar.Value = 100;
                 ConfirmationFormWeb confirms = new ConfirmationFormWeb(currentAccount);
                 confirms.Show();
             }
@@ -118,6 +127,7 @@ namespace Steam_Desktop_Authenticator
                     new InstallRedistribForm(true).ShowDialog();
                 }
             }
+            statusBar.Value = 0;
         }
 
         private void btnManageEncryption_Click(object sender, EventArgs e)
@@ -134,7 +144,7 @@ namespace Steam_Desktop_Authenticator
 
                 string curPassKey = currentPassKeyForm.txtBox.Text;
 
-                InputForm changePassKeyForm = new InputForm("Enter new passkey, or leave blank to remove encryption.");
+                InputForm changePassKeyForm = new InputForm("Enter your new passkey, or leave it blank to remove encryption.", true);
                 changePassKeyForm.ShowDialog();
 
                 if (changePassKeyForm.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
@@ -142,7 +152,7 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
 
-                InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
+                InputForm changePassKeyForm2 = new InputForm("Confirm your new passkey.", true);
                 changePassKeyForm2.ShowDialog();
 
                 if (changePassKeyForm2.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
@@ -194,9 +204,25 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private void updateButtonClicked(object sender, EventArgs e)
+        {
+            if (newVersion == null || currentVersion == null)
+            {
+                checkForUpdates();
+            }
+            else
+            {
+                compareVersions();
+            }
+        }
+
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLoginToken.Text);
+            if (txtLoginToken != null)
+            {
+                Clipboard.SetText(txtLoginToken.Text);
+
+            }
         }
 
 
@@ -250,6 +276,12 @@ namespace Steam_Desktop_Authenticator
             new SettingsForm().ShowDialog();
             manifest = Manifest.GetManifest(true);
             loadSettings();
+        }
+
+        private void openThemeWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ThemeForm().ShowDialog();
+            manifest = Manifest.GetManifest(true);
         }
 
         private void menuDeactivateAuthenticator_Click(object sender, EventArgs e)
@@ -363,17 +395,20 @@ namespace Steam_Desktop_Authenticator
 
         private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < allAccounts.Length; i++)
-            {
-                SteamGuardAccount account = allAccounts[i];
-                if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
+            try {
+                for (int i = 0; i < allAccounts.Length; i++)
                 {
-                    trayAccountList.Text = account.AccountName;
-                    currentAccount = account;
-                    loadAccountInfo();
-                    break;
+                    SteamGuardAccount account = allAccounts[i];
+                    if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
+                    {
+                        trayAccountList.Text = account.AccountName;
+                        currentAccount = account;
+                        loadAccountInfo();
+                        break;
+                    }
                 }
             }
+            catch { }
         }
 
         private void txtAccSearch_TextChanged(object sender, EventArgs e)
@@ -393,18 +428,24 @@ namespace Steam_Desktop_Authenticator
 
         private async void timerSteamGuard_Tick(object sender, EventArgs e)
         {
+            statusBar.Value = 10;
             lblStatus.Text = "Aligning time with Steam...";
             steamTime = await TimeAligner.GetSteamTimeAsync();
+            statusBar.Value = 65;
             lblStatus.Text = "";
 
             currentSteamChunk = steamTime / 30L;
             int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
+
+            statusBar.Value = 100;
 
             loadAccountInfo();
             if (currentAccount != null)
             {
                 pbTimeout.Value = 30 - secondsUntilChange;
             }
+
+            statusBar.Value = 0;
         }
 
         private async void timerTradesPopup_Tick(object sender, EventArgs e)
@@ -417,6 +458,7 @@ namespace Steam_Desktop_Authenticator
 
             try
             {
+                statusBar.Value = 50;
                 lblStatus.Text = "Checking confirmations...";
 
                 foreach (var acc in accs)
@@ -424,7 +466,7 @@ namespace Steam_Desktop_Authenticator
                     try
                     {
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
-                        foreach(var conf in tmp)
+                        foreach (var conf in tmp)
                         {
                             if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
                                 acc.AcceptConfirmation(conf);
@@ -433,6 +475,7 @@ namespace Steam_Desktop_Authenticator
                             else
                                 confs.Add(conf);
                         }
+                        statusBar.Value = 100;
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
                     {
@@ -443,6 +486,7 @@ namespace Steam_Desktop_Authenticator
                 }
 
                 lblStatus.Text = "";
+                statusBar.Value = 0;
 
                 if (confs.Count == 0) return;
 
@@ -467,7 +511,7 @@ namespace Steam_Desktop_Authenticator
             {
                 popupFrm.Account = currentAccount;
                 txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
-                groupAccount.Text = "Account: " + currentAccount.AccountName;
+                txtAccount.Text = "Account: " + currentAccount.AccountName;
             }
         }
 
@@ -498,7 +542,7 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
+            menuLoginAgain.Enabled = menuRefreshSession.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
 
         /// <summary>
@@ -515,14 +559,19 @@ namespace Steam_Desktop_Authenticator
             if (account == null) return;
             if (updatedSessions.Contains(account.AccountName)) return;
 
+            statusBar.Value = 50;
+
             lblStatus.Text = "Refreshing session...";
             btnTradeConfirmations.Enabled = false;
 
             await currentAccount.RefreshSessionAsync();
             updatedSessions.Add(account.AccountName);
 
+            statusBar.Value = 100;
+
             lblStatus.Text = "";
             btnTradeConfirmations.Enabled = true;
+            statusBar.Value = 0;
         }
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
@@ -608,14 +657,15 @@ namespace Steam_Desktop_Authenticator
             updateClient.DownloadStringCompleted += UpdateClient_DownloadStringCompleted;
             updateClient.Headers.Add("Content-Type", "application/json");
             updateClient.Headers.Add("User-Agent", "Steam Desktop Authenticator");
-            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/Jessecar96/SteamDesktopAuthenticator/releases/latest"));
+            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/watsuprico/SteamDesktopAuthenticator/releases/latest"));
         }
 
         private void compareVersions()
         {
             if (newVersion > currentVersion)
             {
-                labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
+
+                updateButton.Text = String.Format("Download update | Current: v{0} New: v{1}", Application.ProductVersion, newVersion.ToString()); // Show the user a new version is available if they press no
                 DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
                 if (updateDialog == DialogResult.Yes)
                 {
@@ -650,5 +700,6 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("Failed to check for updates.");
             }
         }
+
     }
 }

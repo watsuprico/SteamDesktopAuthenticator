@@ -100,5 +100,9 @@ namespace Steam_Desktop_Authenticator
             return false;
         }
 
+        void IRequestHandler.OnResourceLoadComplete(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response, UrlRequestStatus status, long receivedContentLength)
+        {
+
+        }
     }
 }

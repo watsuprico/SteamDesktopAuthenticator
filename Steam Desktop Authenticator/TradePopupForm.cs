@@ -8,19 +8,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class TradePopupForm : Form
+    public partial class TradePopupForm : MaterialForm
     {
         private SteamGuardAccount acc;
         private List<Confirmation> confirms = new List<Confirmation>();
         private bool deny2, accept2;
 
+        private readonly MaterialSkinManager materialSkinManager;
+
         public TradePopupForm()
         {
             InitializeComponent();
             lblStatus.Text = "";
+
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+
         }
 
         public SteamGuardAccount Account
@@ -45,8 +54,7 @@ namespace Steam_Desktop_Authenticator
             if (!accept2)
             {
                 // Allow user to confirm first
-                lblStatus.Text = "Press Accept again to confirm";
-                btnAccept.BackColor = Color.FromArgb(128, 255, 128);
+                lblStatus.Text = "Press again to confirm";
                 accept2 = true;
             }
             else
@@ -62,8 +70,7 @@ namespace Steam_Desktop_Authenticator
         {
             if (!deny2)
             {
-                lblStatus.Text = "Press Deny again to confirm";
-                btnDeny.BackColor = Color.FromArgb(255, 255, 128);
+                lblStatus.Text = "Press again to confirm";
                 deny2 = true;
             }
             else

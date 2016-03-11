@@ -12,19 +12,26 @@ using System.Diagnostics;
 using CefSharp;
 using CefSharp.WinForms;
 using SteamAuth;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class ConfirmationFormWeb : Form
+    public partial class ConfirmationFormWeb : MaterialForm
     {
         private readonly ChromiumWebBrowser browser;
         private string steamCookies;
         private SteamGuardAccount steamAccount;
         private string tradeID;
 
+        private readonly MaterialSkinManager materialSkinManager;
         public ConfirmationFormWeb(SteamGuardAccount steamAccount)
         {
             InitializeComponent();
+            // Initialize MaterialSkinManager
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+
             this.steamAccount = steamAccount;
             this.Text = String.Format("Trade Confirmations - {0}", steamAccount.AccountName);
 

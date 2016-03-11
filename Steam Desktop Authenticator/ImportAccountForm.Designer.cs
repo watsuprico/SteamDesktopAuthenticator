@@ -11,37 +11,55 @@ namespace Steam_Desktop_Authenticator
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportAccountForm));
-            this.labelText = new System.Windows.Forms.Label();
-            this.txtBox = new System.Windows.Forms.TextBox();
-            this.btnImport = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelText = new MaterialSkin.Controls.MaterialLabel();
+            this.txtBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.btnImport = new MaterialSkin.Controls.MaterialFlatButton();
+            this.btnCancel = new MaterialSkin.Controls.MaterialFlatButton();
+            this.label1 = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
             // 
             // labelText
             // 
+            this.labelText.Depth = 0;
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(15, 14);
+            this.labelText.Font = new System.Drawing.Font("Roboto", 11F);
+            this.labelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.labelText.Location = new System.Drawing.Point(14, 70);
+            this.labelText.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelText.Name = "labelText";
-            this.labelText.Size = new System.Drawing.Size(317, 25);
+            this.labelText.Size = new System.Drawing.Size(293, 41);
             this.labelText.TabIndex = 0;
-            this.labelText.Text = "Enter your encryption passkey if your .maFile is encrypted:";
+            this.labelText.Text = "Enter your encryption passkey if your .maFileis encrypted:";
             // 
             // txtBox
             // 
+            this.txtBox.Depth = 0;
             this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox.Location = new System.Drawing.Point(15, 42);
+            this.txtBox.Hint = "";
+            this.txtBox.Location = new System.Drawing.Point(14, 115);
+            this.txtBox.MaxLength = 32767;
+            this.txtBox.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(307, 33);
+            this.txtBox.PasswordChar = '\0';
+            this.txtBox.SelectedText = "";
+            this.txtBox.SelectionLength = 0;
+            this.txtBox.SelectionStart = 0;
+            this.txtBox.Size = new System.Drawing.Size(293, 23);
             this.txtBox.TabIndex = 1;
+            this.txtBox.TabStop = false;
+            this.txtBox.UseSystemPasswordChar = false;
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(135, 131);
+            this.btnImport.AutoSize = true;
+            this.btnImport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnImport.Depth = 0;
+            this.btnImport.Location = new System.Drawing.Point(86, 201);
+            this.btnImport.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnImport.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(187, 28);
+            this.btnImport.Primary = false;
+            this.btnImport.Size = new System.Drawing.Size(221, 36);
             this.btnImport.TabIndex = 3;
             this.btnImport.Text = "Select .maFile file to Import";
             this.btnImport.UseVisualStyleBackColor = true;
@@ -49,10 +67,16 @@ namespace Steam_Desktop_Authenticator
             // 
             // btnCancel
             // 
+            this.btnCancel.AutoSize = true;
+            this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCancel.Depth = 0;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(41, 131);
+            this.btnCancel.Location = new System.Drawing.Point(14, 201);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 28);
+            this.btnCancel.Primary = false;
+            this.btnCancel.Size = new System.Drawing.Size(64, 36);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -60,12 +84,14 @@ namespace Steam_Desktop_Authenticator
             // 
             // label1
             // 
+            this.label1.Depth = 0;
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(15, 83);
+            this.label1.Font = new System.Drawing.Font("Roboto", 11F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label1.Location = new System.Drawing.Point(14, 141);
+            this.label1.MouseState = MaterialSkin.MouseState.HOVER;
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(307, 40);
+            this.label1.Size = new System.Drawing.Size(293, 40);
             this.label1.TabIndex = 2;
             this.label1.Text = "If you import an encrypted .maFile, the manifest file must be next to it.";
             // 
@@ -75,14 +101,13 @@ namespace Steam_Desktop_Authenticator
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(336, 171);
+            this.ClientSize = new System.Drawing.Size(320, 252);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.labelText);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ImportAccountForm";
@@ -97,10 +122,10 @@ namespace Steam_Desktop_Authenticator
 
         #endregion
 
-        private System.Windows.Forms.Label labelText;
-        private System.Windows.Forms.TextBox txtBox;
-        private System.Windows.Forms.Button btnImport;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label label1;
+        private MaterialSkin.Controls.MaterialLabel labelText;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtBox;
+        private MaterialSkin.Controls.MaterialFlatButton btnImport;
+        private MaterialSkin.Controls.MaterialFlatButton btnCancel;
+        private MaterialSkin.Controls.MaterialLabel label1;
     }
 }

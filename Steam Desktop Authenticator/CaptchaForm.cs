@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class CaptchaForm :Form
+    public partial class CaptchaForm : MaterialForm
     {
         public bool Canceled = false;
         public string CaptchaGID = "";

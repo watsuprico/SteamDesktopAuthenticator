@@ -29,63 +29,88 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaptchaForm));
-            this.labelText = new System.Windows.Forms.Label();
-            this.txtBox = new System.Windows.Forms.TextBox();
-            this.btnAccept = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.labelText = new MaterialSkin.Controls.MaterialLabel();
             this.pictureBoxCaptcha = new System.Windows.Forms.PictureBox();
+            this.txtBox = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.btnCancel = new MaterialSkin.Controls.MaterialFlatButton();
+            this.btnAccept = new MaterialSkin.Controls.MaterialFlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).BeginInit();
             this.SuspendLayout();
             // 
             // labelText
             // 
+            this.labelText.BackColor = System.Drawing.Color.Transparent;
+            this.labelText.Depth = 0;
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(-1, 14);
+            this.labelText.Font = new System.Drawing.Font("Roboto", 11F);
+            this.labelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.labelText.Location = new System.Drawing.Point(0, 13);
+            this.labelText.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelText.Name = "labelText";
-            this.labelText.Size = new System.Drawing.Size(233, 18);
+            this.labelText.Size = new System.Drawing.Size(233, 51);
             this.labelText.TabIndex = 0;
             this.labelText.Text = "Please enter the following captcha code:";
             this.labelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pictureBoxCaptcha
+            // 
+            this.pictureBoxCaptcha.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxCaptcha.Location = new System.Drawing.Point(12, 73);
+            this.pictureBoxCaptcha.Name = "pictureBoxCaptcha";
+            this.pictureBoxCaptcha.Size = new System.Drawing.Size(208, 40);
+            this.pictureBoxCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxCaptcha.TabIndex = 4;
+            this.pictureBoxCaptcha.TabStop = false;
+            // 
             // txtBox
             // 
-            this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox.Location = new System.Drawing.Point(12, 84);
+            this.txtBox.Depth = 0;
+            this.txtBox.Hint = "";
+            this.txtBox.Location = new System.Drawing.Point(12, 119);
+            this.txtBox.MaxLength = 32767;
+            this.txtBox.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(206, 33);
-            this.txtBox.TabIndex = 1;
-            // 
-            // btnAccept
-            // 
-            this.btnAccept.Location = new System.Drawing.Point(11, 123);
-            this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(98, 28);
-            this.btnAccept.TabIndex = 2;
-            this.btnAccept.Text = "Submit";
-            this.btnAccept.UseVisualStyleBackColor = true;
-            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
+            this.txtBox.PasswordChar = '\0';
+            this.txtBox.SelectedText = "";
+            this.txtBox.SelectionLength = 0;
+            this.txtBox.SelectionStart = 0;
+            this.txtBox.Size = new System.Drawing.Size(208, 23);
+            this.txtBox.TabIndex = 12;
+            this.txtBox.TabStop = false;
+            this.txtBox.UseSystemPasswordChar = false;
             // 
             // btnCancel
             // 
+            this.btnCancel.AutoSize = true;
+            this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCancel.Depth = 0;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(120, 123);
+            this.btnCancel.Location = new System.Drawing.Point(120, 151);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(98, 28);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Primary = false;
+            this.btnCancel.Size = new System.Drawing.Size(64, 36);
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // pictureBoxCaptcha
+            // btnAccept
             // 
-            this.pictureBoxCaptcha.Location = new System.Drawing.Point(12, 37);
-            this.pictureBoxCaptcha.Name = "pictureBoxCaptcha";
-            this.pictureBoxCaptcha.Size = new System.Drawing.Size(206, 40);
-            this.pictureBoxCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxCaptcha.TabIndex = 4;
-            this.pictureBoxCaptcha.TabStop = false;
+            this.btnAccept.AutoSize = true;
+            this.btnAccept.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnAccept.Depth = 0;
+            this.btnAccept.Location = new System.Drawing.Point(48, 151);
+            this.btnAccept.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnAccept.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnAccept.Name = "btnAccept";
+            this.btnAccept.Primary = false;
+            this.btnAccept.Size = new System.Drawing.Size(62, 36);
+            this.btnAccept.TabIndex = 10;
+            this.btnAccept.Text = "Submit";
+            this.btnAccept.UseVisualStyleBackColor = true;
+            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
             // 
             // CaptchaForm
             // 
@@ -93,15 +118,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(232, 164);
-            this.Controls.Add(this.pictureBoxCaptcha);
+            this.ClientSize = new System.Drawing.Size(232, 202);
+            this.ControlBox = false;
+            this.Controls.Add(this.txtBox);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
-            this.Controls.Add(this.txtBox);
+            this.Controls.Add(this.pictureBoxCaptcha);
             this.Controls.Add(this.labelText);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CaptchaForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).EndInit();
@@ -112,10 +139,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label labelText;
-        public System.Windows.Forms.TextBox txtBox;
-        private System.Windows.Forms.Button btnAccept;
-        private System.Windows.Forms.Button btnCancel;
+        private MaterialSkin.Controls.MaterialLabel labelText;
         private System.Windows.Forms.PictureBox pictureBoxCaptcha;
+        public MaterialSkin.Controls.MaterialSingleLineTextField txtBox;
+        private MaterialSkin.Controls.MaterialFlatButton btnCancel;
+        private MaterialSkin.Controls.MaterialFlatButton btnAccept;
     }
 }

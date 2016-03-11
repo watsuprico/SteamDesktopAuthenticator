@@ -9,16 +9,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class InstallRedistribForm : Form
+    public partial class InstallRedistribForm : MaterialForm
     {
         private bool inlineInstall = false;
+
+        private readonly MaterialSkinManager materialSkinManager;
 
         public InstallRedistribForm(bool inlineInstall = false)
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
             progressBar1.Minimum = 0;
 
             string path = Manifest.GetExecutableDir() + "/vcredist_x86.exe";

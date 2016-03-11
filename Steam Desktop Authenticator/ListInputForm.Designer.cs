@@ -30,23 +30,29 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListInputForm));
             this.lbItems = new System.Windows.Forms.ListBox();
-            this.btnAccept = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnAccept = new MaterialSkin.Controls.MaterialFlatButton();
+            this.btnCancel = new MaterialSkin.Controls.MaterialFlatButton();
             this.SuspendLayout();
             // 
             // lbItems
             // 
             this.lbItems.FormattingEnabled = true;
-            this.lbItems.Location = new System.Drawing.Point(23, 63);
+            this.lbItems.Location = new System.Drawing.Point(12, 78);
             this.lbItems.Name = "lbItems";
             this.lbItems.Size = new System.Drawing.Size(248, 82);
             this.lbItems.TabIndex = 0;
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(277, 63);
+            this.btnAccept.AutoSize = true;
+            this.btnAccept.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnAccept.Depth = 0;
+            this.btnAccept.Location = new System.Drawing.Point(267, 78);
+            this.btnAccept.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnAccept.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(75, 23);
+            this.btnAccept.Primary = false;
+            this.btnAccept.Size = new System.Drawing.Size(64, 36);
             this.btnAccept.TabIndex = 1;
             this.btnAccept.Text = "Accept";
             this.btnAccept.UseVisualStyleBackColor = true;
@@ -54,9 +60,15 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(277, 122);
+            this.btnCancel.AutoSize = true;
+            this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCancel.Depth = 0;
+            this.btnCancel.Location = new System.Drawing.Point(267, 124);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Primary = false;
+            this.btnCancel.Size = new System.Drawing.Size(64, 36);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -66,7 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 172);
+            this.ClientSize = new System.Drawing.Size(343, 172);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.lbItems);
@@ -77,13 +89,14 @@
             this.Text = "Select one";
             this.Load += new System.EventHandler(this.ListInputForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.ListBox lbItems;
-        private System.Windows.Forms.Button btnAccept;
-        private System.Windows.Forms.Button btnCancel;
+        private MaterialSkin.Controls.MaterialFlatButton btnAccept;
+        private MaterialSkin.Controls.MaterialFlatButton btnCancel;
     }
 }

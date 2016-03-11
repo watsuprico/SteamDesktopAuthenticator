@@ -8,16 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class WelcomeForm : Form
+    public partial class WelcomeForm : MaterialForm
     {
         private Manifest man;
 
+        private readonly MaterialSkinManager materialSkinManager;
         public WelcomeForm()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
             man = Manifest.GetManifest();
         }
 
@@ -26,6 +31,9 @@ namespace Steam_Desktop_Authenticator
             // Mark as not first run anymore
             man.FirstRun = false;
             man.Save();
+
+            LoginForm mLoginForm = new LoginForm();
+            mLoginForm.ShowDialog();
 
             showMainForm();
         }

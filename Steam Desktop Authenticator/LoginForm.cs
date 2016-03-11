@@ -1,10 +1,12 @@
 using System;
 using System.Windows.Forms;
 using SteamAuth;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : MaterialForm
     {
 
         public UserLogin userLogin;
@@ -12,9 +14,12 @@ namespace Steam_Desktop_Authenticator
         public bool refreshLogin = false;
         public bool loginFromAndroid = false;
 
+        private readonly MaterialSkinManager materialSkinManager;
         public LoginForm(bool forceAndroidImport = false)
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
         }
 
         public void SetUsername(string username)
@@ -34,7 +39,7 @@ namespace Steam_Desktop_Authenticator
             return true;
         }
 
-        private void btnSteamLogin_Click(object sender, EventArgs e)
+        private void Login()
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
@@ -239,6 +244,11 @@ namespace Steam_Desktop_Authenticator
             this.Close();
         }
 
+        private void btnSteamLogin_Click(object sender, EventArgs e)
+        {
+            Login();   
+        }
+
         /// <summary>
         /// Handles logging in to refresh session data. i.e. changing steam password.
         /// </summary>
@@ -437,5 +447,11 @@ namespace Steam_Desktop_Authenticator
                 txtUsername.Text = androidAccount.AccountName;
             }
         }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Control.ModifierKeys == Keys.Enter) { Login(); }
+        }
+
     }
 }

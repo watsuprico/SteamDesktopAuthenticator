@@ -11,16 +11,21 @@ using SteamAuth;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class ImportAccountForm : Form
+    public partial class ImportAccountForm : MaterialForm
     {
         private Manifest mManifest;
 
+        private readonly MaterialSkinManager materialSkinManager;
         public ImportAccountForm()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
             this.mManifest = Manifest.GetManifest();
         }
 

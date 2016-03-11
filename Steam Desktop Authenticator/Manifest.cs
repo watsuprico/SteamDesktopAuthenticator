@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -31,10 +32,27 @@ namespace Steam_Desktop_Authenticator
         public bool CheckAllAccounts { get; set; } = false;
 
         [JsonProperty("auto_confirm_market_transactions")]
-        public bool AutoConfirmMarketTransactions { get; set; } = false;
-
+         public bool AutoConfirmMarketTransactions { get; set; } = false;
+ 
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
+
+        //Theme
+        [JsonProperty("theme_primary")]
+        public Primary ThemePrimary { get; set; } = Primary.BlueGrey800;
+        [JsonProperty("theme_primaryd")]
+        public Primary ThemePrimaryD { get; set; } = Primary.BlueGrey800;
+        [JsonProperty("theme_primaryl")]
+        public Primary ThemePrimaryL { get; set; } = Primary.BlueGrey700;
+
+        [JsonProperty("theme_accent")]
+        public Accent ThemeAccent { get; set; } = Accent.Cyan700;
+
+        [JsonProperty("theme_main")]
+        public bool ThemeDark { get; set; } = true;
+
+
+
 
         private static Manifest _manifest { get; set; }
 
@@ -101,6 +119,12 @@ namespace Steam_Desktop_Authenticator
             newManifest.AutoConfirmTrades = false;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
+
+            newManifest.ThemePrimary = Primary.BlueGrey800;
+            newManifest.ThemePrimaryD = Primary.BlueGrey800;
+            newManifest.ThemePrimaryL = Primary.BlueGrey700;
+            newManifest.ThemeAccent = Accent.Cyan700;
+            newManifest.ThemeDark = true;
 
             // Take a pre-manifest version and generate a manifest for it.
             if (scanDir)

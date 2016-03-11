@@ -7,15 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class ListInputForm : Form
+    public partial class ListInputForm : MaterialForm
     {
+        private readonly MaterialSkinManager materialSkinManager;
         public ListInputForm(List<string> options)
         {
             Items = options;
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
         }
 
         public int SelectedIndex;
