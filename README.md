@@ -8,7 +8,7 @@
   <sup><b>We are not affiliated with Steam or Scrap.TF in any way!</b> This project is run by community volunteers.
 </p>
 <h3 align="center">
-  <a href="https://github.com/Jessecar96/SteamDesktopAuthenticator/releases/latest">Download here</a>
+  <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/releases/latest">Download here</a>
 </h3>
 <p align="center">
 <b>Clicking "Download ZIP" will not work!</b> This project uses git submodules so you must use git to download it properly.<br/>
