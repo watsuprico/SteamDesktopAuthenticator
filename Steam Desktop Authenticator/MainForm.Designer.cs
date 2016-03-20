@@ -47,7 +47,6 @@
             this.label1 = new MaterialSkin.Controls.MaterialLabel();
             this.pbTimeout = new MaterialSkin.Controls.MaterialProgressBar();
             this.btnCopy = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.txtLoginToken = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.txtAccount = new MaterialSkin.Controls.MaterialLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.statusBar = new MaterialSkin.Controls.MaterialProgressBar();
@@ -75,6 +74,7 @@
             this.menuDeactivateAuthenticator = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.txtLoginToken = new MaterialSkin.Controls.MaterialLabel();
             this.menuStripTray.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -224,6 +224,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopy.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCopy.Depth = 0;
             this.btnCopy.Location = new System.Drawing.Point(399, 35);
             this.btnCopy.MouseState = MaterialSkin.MouseState.HOVER;
@@ -234,28 +235,6 @@
             this.btnCopy.Text = "Copy";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
-            // 
-            // txtLoginToken
-            // 
-            this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLoginToken.Depth = 0;
-            this.txtLoginToken.Enabled = false;
-            this.txtLoginToken.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLoginToken.Hint = "";
-            this.txtLoginToken.Location = new System.Drawing.Point(6, 35);
-            this.txtLoginToken.MaxLength = 32767;
-            this.txtLoginToken.MouseState = MaterialSkin.MouseState.HOVER;
-            this.txtLoginToken.Name = "txtLoginToken";
-            this.txtLoginToken.PasswordChar = '\0';
-            this.txtLoginToken.SelectedText = "";
-            this.txtLoginToken.SelectionLength = 0;
-            this.txtLoginToken.SelectionStart = 0;
-            this.txtLoginToken.Size = new System.Drawing.Size(387, 23);
-            this.txtLoginToken.TabIndex = 0;
-            this.txtLoginToken.TabStop = false;
-            this.txtLoginToken.Text = "None";
-            this.txtLoginToken.UseSystemPasswordChar = false;
             // 
             // txtAccount
             // 
@@ -274,11 +253,11 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.txtLoginToken);
             this.panel1.Controls.Add(this.statusBar);
             this.panel1.Controls.Add(this.btnTradeConfirmations);
             this.panel1.Controls.Add(this.txtAccount);
             this.panel1.Controls.Add(this.pbTimeout);
-            this.panel1.Controls.Add(this.txtLoginToken);
             this.panel1.Controls.Add(this.btnCopy);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
@@ -381,6 +360,7 @@
             this.menuQuit});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
@@ -472,6 +452,7 @@
             this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
+            this.accountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
             this.accountToolStripMenuItem.Text = "Selected Account";
             // 
@@ -533,6 +514,21 @@
             this.panel3.Size = new System.Drawing.Size(465, 413);
             this.panel3.TabIndex = 18;
             // 
+            // txtLoginToken
+            // 
+            this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLoginToken.Depth = 0;
+            this.txtLoginToken.Font = new System.Drawing.Font("Roboto Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLoginToken.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.txtLoginToken.Location = new System.Drawing.Point(6, 35);
+            this.txtLoginToken.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtLoginToken.Name = "txtLoginToken";
+            this.txtLoginToken.Size = new System.Drawing.Size(387, 26);
+            this.txtLoginToken.TabIndex = 17;
+            this.txtLoginToken.Text = "No auth code available";
+            this.txtLoginToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnCopy;
@@ -581,7 +577,6 @@
         private MaterialSkin.Controls.MaterialLabel label1;
         private MaterialSkin.Controls.MaterialProgressBar pbTimeout;
         private MaterialSkin.Controls.MaterialRaisedButton btnCopy;
-        private MaterialSkin.Controls.MaterialSingleLineTextField txtLoginToken;
         private MaterialSkin.Controls.MaterialLabel txtAccount;
         private System.Windows.Forms.Panel panel1;
         private MaterialSkin.Controls.MaterialFlatButton updateButton;
@@ -609,6 +604,7 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolStripMenuItem openThemeWindowToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialLabel txtLoginToken;
     }
 }
 

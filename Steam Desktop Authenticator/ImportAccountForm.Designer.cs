@@ -47,7 +47,7 @@ namespace Steam_Desktop_Authenticator
             this.txtBox.Size = new System.Drawing.Size(293, 23);
             this.txtBox.TabIndex = 1;
             this.txtBox.TabStop = false;
-            this.txtBox.UseSystemPasswordChar = false;
+            this.txtBox.UseSystemPasswordChar = true;
             // 
             // btnImport
             // 

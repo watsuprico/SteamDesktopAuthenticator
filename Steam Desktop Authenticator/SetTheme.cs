@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.Configuration;
 
 namespace Steam_Desktop_Authenticator
 {
     public partial class SetTheme : Form
     {
 
-        bool noTheme = false;
         Manifest manifest;
         private readonly MaterialSkinManager materialSkinManager;
 
@@ -33,13 +33,13 @@ namespace Steam_Desktop_Authenticator
 
         private void btnNoTheme_Click(object sender, EventArgs e)
         {
-            noTheme = true;
+            ConfigurationManager.AppSettings["noTheme"] = "true";
             Close();
         }
 
         private void setThemeTime_Tick(object sender, EventArgs e)
         {
-            if (noTheme != true)
+            if (ConfigurationManager.AppSettings["noTheme"] != "true")
             {
                 // Get latest manifest
                 manifest = Manifest.GetManifest(true);

@@ -39,11 +39,11 @@ namespace Steam_Desktop_Authenticator
 
         //Theme
         [JsonProperty("theme_primary")]
-        public Primary ThemePrimary { get; set; } = Primary.BlueGrey800;
+        public Primary ThemePrimary { get; set; } = Primary.BlueGrey700;
         [JsonProperty("theme_primaryd")]
-        public Primary ThemePrimaryD { get; set; } = Primary.BlueGrey800;
+        public Primary ThemePrimaryD { get; set; } = Primary.BlueGrey700;
         [JsonProperty("theme_primaryl")]
-        public Primary ThemePrimaryL { get; set; } = Primary.BlueGrey700;
+        public Primary ThemePrimaryL { get; set; } = Primary.BlueGrey600;
 
         [JsonProperty("theme_accent")]
         public Accent ThemeAccent { get; set; } = Accent.Cyan700;
@@ -120,9 +120,9 @@ namespace Steam_Desktop_Authenticator
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 
-            newManifest.ThemePrimary = Primary.BlueGrey800;
-            newManifest.ThemePrimaryD = Primary.BlueGrey800;
-            newManifest.ThemePrimaryL = Primary.BlueGrey700;
+            newManifest.ThemePrimary = Primary.BlueGrey700;
+            newManifest.ThemePrimaryD = Primary.BlueGrey700;
+            newManifest.ThemePrimaryL = Primary.BlueGrey600;
             newManifest.ThemeAccent = Accent.Cyan700;
             newManifest.ThemeDark = true;
 

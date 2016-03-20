@@ -42,10 +42,12 @@
             this.btnSave = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSaveAndQuit = new MaterialSkin.Controls.MaterialFlatButton();
             this.savedStatus = new MaterialSkin.Controls.MaterialLabel();
+            this.btnLoadTheme = new MaterialSkin.Controls.MaterialFlatButton();
             this.SuspendLayout();
             // 
             // lstP
             // 
+            this.lstP.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lstP.FormattingEnabled = true;
             this.lstP.Items.AddRange(new object[] {
             "Red50",
@@ -272,6 +274,7 @@
             // 
             // lstPDark
             // 
+            this.lstPDark.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lstPDark.FormattingEnabled = true;
             this.lstPDark.Items.AddRange(new object[] {
             "Red50",
@@ -485,6 +488,7 @@
             // 
             // lstPLight
             // 
+            this.lstPLight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lstPLight.FormattingEnabled = true;
             this.lstPLight.Items.AddRange(new object[] {
             "Red50",
@@ -685,6 +689,7 @@
             // 
             // lstA
             // 
+            this.lstA.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lstA.FormattingEnabled = true;
             this.lstA.Items.AddRange(new object[] {
             "Red100",
@@ -782,12 +787,13 @@
             // 
             // btnDarkMode
             // 
+            this.btnDarkMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDarkMode.Depth = 0;
-            this.btnDarkMode.Location = new System.Drawing.Point(377, 118);
+            this.btnDarkMode.Location = new System.Drawing.Point(380, 118);
             this.btnDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnDarkMode.Name = "btnDarkMode";
             this.btnDarkMode.Primary = true;
-            this.btnDarkMode.Size = new System.Drawing.Size(113, 29);
+            this.btnDarkMode.Size = new System.Drawing.Size(111, 29);
             this.btnDarkMode.TabIndex = 8;
             this.btnDarkMode.Text = "Dark mode";
             this.btnDarkMode.UseVisualStyleBackColor = true;
@@ -795,12 +801,13 @@
             // 
             // btnLightMode
             // 
+            this.btnLightMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLightMode.Depth = 0;
-            this.btnLightMode.Location = new System.Drawing.Point(377, 153);
+            this.btnLightMode.Location = new System.Drawing.Point(380, 153);
             this.btnLightMode.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnLightMode.Name = "btnLightMode";
             this.btnLightMode.Primary = true;
-            this.btnLightMode.Size = new System.Drawing.Size(113, 29);
+            this.btnLightMode.Size = new System.Drawing.Size(111, 29);
             this.btnLightMode.TabIndex = 9;
             this.btnLightMode.Text = "Light mode";
             this.btnLightMode.UseVisualStyleBackColor = true;
@@ -808,14 +815,18 @@
             // 
             // btnSave
             // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.Depth = 0;
-            this.btnSave.Location = new System.Drawing.Point(414, 255);
+            this.btnSave.Location = new System.Drawing.Point(414, 256);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
-            this.btnSave.Primary = false;
+            this.btnSave.Primary = true;
             this.btnSave.Size = new System.Drawing.Size(46, 36);
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "Save";
@@ -826,12 +837,13 @@
             // 
             this.btnSaveAndQuit.AutoSize = true;
             this.btnSaveAndQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSaveAndQuit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSaveAndQuit.Depth = 0;
             this.btnSaveAndQuit.Location = new System.Drawing.Point(380, 303);
             this.btnSaveAndQuit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSaveAndQuit.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSaveAndQuit.Name = "btnSaveAndQuit";
-            this.btnSaveAndQuit.Primary = false;
+            this.btnSaveAndQuit.Primary = true;
             this.btnSaveAndQuit.Size = new System.Drawing.Size(111, 36);
             this.btnSaveAndQuit.TabIndex = 11;
             this.btnSaveAndQuit.Text = "Save and quit";
@@ -840,22 +852,42 @@
             // 
             // savedStatus
             // 
-            this.savedStatus.AutoSize = true;
             this.savedStatus.Depth = 0;
             this.savedStatus.Font = new System.Drawing.Font("Roboto", 11F);
             this.savedStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.savedStatus.Location = new System.Drawing.Point(395, 223);
+            this.savedStatus.Location = new System.Drawing.Point(380, 223);
             this.savedStatus.MouseState = MaterialSkin.MouseState.HOVER;
             this.savedStatus.Name = "savedStatus";
-            this.savedStatus.Size = new System.Drawing.Size(77, 19);
+            this.savedStatus.Size = new System.Drawing.Size(111, 19);
             this.savedStatus.TabIndex = 12;
             this.savedStatus.Text = "Not saved";
+            this.savedStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnLoadTheme
+            // 
+            this.btnLoadTheme.AutoSize = true;
+            this.btnLoadTheme.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLoadTheme.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoadTheme.Depth = 0;
+            this.btnLoadTheme.Enabled = false;
+            this.btnLoadTheme.Location = new System.Drawing.Point(388, 256);
+            this.btnLoadTheme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLoadTheme.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLoadTheme.Name = "btnLoadTheme";
+            this.btnLoadTheme.Primary = true;
+            this.btnLoadTheme.Size = new System.Drawing.Size(96, 36);
+            this.btnLoadTheme.TabIndex = 13;
+            this.btnLoadTheme.Text = "Load theme";
+            this.btnLoadTheme.UseVisualStyleBackColor = true;
+            this.btnLoadTheme.Visible = false;
+            this.btnLoadTheme.Click += new System.EventHandler(this.loadTheme_Click);
             // 
             // ThemeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(502, 365);
+            this.Controls.Add(this.btnLoadTheme);
             this.Controls.Add(this.savedStatus);
             this.Controls.Add(this.btnSaveAndQuit);
             this.Controls.Add(this.btnSave);
@@ -874,6 +906,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ThemeForm";
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Theme";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ThemeForm_FormClosing);
@@ -898,5 +931,6 @@
         private MaterialSkin.Controls.MaterialFlatButton btnSave;
         private MaterialSkin.Controls.MaterialFlatButton btnSaveAndQuit;
         private MaterialSkin.Controls.MaterialLabel savedStatus;
+        private MaterialSkin.Controls.MaterialFlatButton btnLoadTheme;
     }
 }

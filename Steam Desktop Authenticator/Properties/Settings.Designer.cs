@@ -22,5 +22,17 @@ namespace Steam_Desktop_Authenticator.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool noTheme {
+            get {
+                return ((bool)(this["noTheme"]));
+            }
+            set {
+                this["noTheme"] = value;
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ using System.Net;
 using Newtonsoft.Json;
 using MaterialSkin;
 using MaterialSkin.Controls;
-
+using System.Drawing;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -45,7 +45,11 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            Font font = new Font("Roboto Light", 9.5f);
+            txtLoginToken.Font = font;
+
             this.updateButton.Text = String.Format("Check for an update | v{0}", Application.ProductVersion);
+            updateButton.Primary = false;
             this.manifest = Manifest.GetManifest();
 
             // Make sure we don't show that welcome dialog again
@@ -542,7 +546,7 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            menuLoginAgain.Enabled = menuRefreshSession.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
+            menuLoginAgain.Enabled = menuRefreshSession.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Primary = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
 
         /// <summary>
@@ -563,6 +567,7 @@ namespace Steam_Desktop_Authenticator
 
             lblStatus.Text = "Refreshing session...";
             btnTradeConfirmations.Enabled = false;
+            btnTradeConfirmations.Primary = false;
 
             await currentAccount.RefreshSessionAsync();
             updatedSessions.Add(account.AccountName);
@@ -571,6 +576,7 @@ namespace Steam_Desktop_Authenticator
 
             lblStatus.Text = "";
             btnTradeConfirmations.Enabled = true;
+            btnTradeConfirmations.Primary = true;
             statusBar.Value = 0;
         }
 
@@ -665,11 +671,13 @@ namespace Steam_Desktop_Authenticator
             if (newVersion > currentVersion)
             {
 
+                updateButton.Primary = true;
                 updateButton.Text = String.Format("Download update | Current: v{0} New: v{1}", Application.ProductVersion, newVersion.ToString()); // Show the user a new version is available if they press no
                 DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
                 if (updateDialog == DialogResult.Yes)
                 {
-                    Process.Start(updateUrl);
+                    //Process.Start(updateUrl);
+                    new DownloadUpdate(updateUrl).ShowDialog();
                 }
             }
             else
@@ -677,6 +685,7 @@ namespace Steam_Desktop_Authenticator
                 if (!startupUpdateCheck)
                 {
                     MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
+                    updateButton.Primary = false;
                 }
             }
 

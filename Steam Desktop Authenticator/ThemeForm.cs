@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -30,7 +31,9 @@ namespace Steam_Desktop_Authenticator
         private Accent a;
         private bool darkTheme;
 
-        private bool notSaved;
+        public bool noTheme;
+
+        private bool notSaved = false;
 
         public ThemeForm()
         {
@@ -38,50 +41,64 @@ namespace Steam_Desktop_Authenticator
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             manifest = Manifest.GetManifest(true);
-
+            if (ConfigurationManager.AppSettings["noTheme"] != "true")
+                noTheme = false;
+            else
+                noTheme = true;
         }
 
         private void ThemeForm_Load(object sender, EventArgs e)
         {
-            lstA.SelectedItem = manifest.ThemeAccent;
-
             primaryColor = manifest.ThemePrimary;
             primaryColorDark = manifest.ThemePrimaryD;
             primaryColorLight = manifest.ThemePrimaryL;
-
             accentColor = manifest.ThemeAccent;
 
             darkTheme = manifest.ThemeDark;
+            if (noTheme)
+            {
+                savedStatus.Text = "Themes disabled!";
+                btnLoadTheme.Enabled = btnLoadTheme.Visible = true;
+                btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = false;
+            }
+            else
+            {
+                lstP.SelectedIndex = lstP.FindStringExact(primaryColor.ToString());
+                lstPDark.SelectedIndex = lstPDark.FindStringExact(primaryColorDark.ToString());
+                lstPLight.SelectedIndex = lstPLight.FindStringExact(primaryColorLight.ToString());
+                lstA.SelectedIndex = lstA.FindStringExact(accentColor.ToString());
+                Save();
+            }
         }
 
         private void ThemeForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (notSaved)
+            if (!noTheme)
             {
-                var result = MessageBox.Show("Warning: you've not saved your theme changes. Are you sure you would like to discard these theme changes?", "Warning!", MessageBoxButtons.YesNo);
-                if (result == DialogResult.No)
-                    e.Cancel = true;
-                else {
-                    // Get latest manifest
+                if (notSaved)
+                {
+                    var result = MessageBox.Show("Warning: you've not saved your theme changes. Are you sure you would like to discard these theme changes?", "Warning!", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.No)
+                        e.Cancel = true;
+                    else
+                    {
+                        manifest = Manifest.GetManifest(true);
+                        if (manifest.ThemeDark)
+                            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                        else
+                            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                        materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
+                    }
+                }
+                else
+                {
                     manifest = Manifest.GetManifest(true);
-
                     if (manifest.ThemeDark)
                         materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
                     else
                         materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
                     materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
                 }
-
-            }
-            else {
-                // Get latest manifest
-                manifest = Manifest.GetManifest(true);
-
-                if (manifest.ThemeDark)
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                else
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
             }
         }
 
@@ -108,22 +125,47 @@ namespace Steam_Desktop_Authenticator
             Save();
         }
 
+        private void loadTheme_Click(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["noTheme"] == "true")
+            {
+                noTheme = false;
+                ConfigurationManager.AppSettings["noTheme"] = "false";
+
+                manifest = Manifest.GetManifest(true);
+
+                if (manifest.ThemeDark)
+                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                else
+                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
+
+                savedStatus.Text = "Theme loaded";
+                btnLoadTheme.Enabled = btnLoadTheme.Visible = false;
+                btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = true;
+                Save();
+            }
+        }
+
         private void Save()
         {
-            savedStatus.Text = "Saving";
-            manifest.ThemePrimary = primaryColor;
-            manifest.ThemePrimaryD = primaryColorDark;
-            manifest.ThemePrimaryL = primaryColorLight;
-            manifest.ThemeAccent = accentColor;
-            manifest.ThemeDark = darkTheme;
-            manifest.Save();
-            savedStatus.Text = "Saved";
-            notSaved = false;
+            if (!noTheme)
+            {
+                savedStatus.Text = "Saving";
+                manifest.ThemePrimary = primaryColor;
+                manifest.ThemePrimaryD = primaryColorDark;
+                manifest.ThemePrimaryL = primaryColorLight;
+                manifest.ThemeAccent = accentColor;
+                manifest.ThemeDark = darkTheme;
+                manifest.Save();
+                savedStatus.Text = "Saved";
+                notSaved = btnSave.Enabled = btnSaveAndQuit.Enabled = false;
+            }
         }
 
         private void lstP_SelectedValueChanged(object sender, EventArgs e)
         {
-            updateTheme();
+                updateTheme();
         }
 
         private void translateString()
@@ -140,19 +182,23 @@ namespace Steam_Desktop_Authenticator
 
         private void updateTheme()
         {
-            savedStatus.Text = "Not saved";
-            notSaved = true;
-            try { primaryColor1 = (string)lstP.Items[lstP.SelectedIndex]; } catch { primaryColor1 = primaryColor.ToString(); }
-            try { primaryColorDark1 = (string)lstPDark.Items[lstPDark.SelectedIndex]; } catch { primaryColorDark1 = primaryColorDark.ToString(); }
-            try { primaryColorLight1 = (string)lstPLight.Items[lstPLight.SelectedIndex]; } catch { primaryColorLight1 = primaryColorLight.ToString(); }
-            try { accentColor1 = (string)lstA.Items[lstA.SelectedIndex]; } catch { accentColor1 = accentColor.ToString(); }
-            translateString();
-            if (darkTheme)
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            else
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-
-            materialSkinManager.ColorScheme = new ColorScheme(primaryColor, primaryColorDark, primaryColorLight, accentColor, TextShade.WHITE);
+            if (!noTheme)
+            {
+                savedStatus.Text = "Not saved";
+                notSaved = true;
+                btnSave.Enabled = true;
+                btnSaveAndQuit.Enabled = true;
+                try { primaryColor1 = (string)lstP.Items[lstP.SelectedIndex]; } catch { primaryColor1 = primaryColor.ToString(); }
+                try { primaryColorDark1 = (string)lstPDark.Items[lstPDark.SelectedIndex]; } catch { primaryColorDark1 = primaryColorDark.ToString(); }
+                try { primaryColorLight1 = (string)lstPLight.Items[lstPLight.SelectedIndex]; } catch { primaryColorLight1 = primaryColorLight.ToString(); }
+                try { accentColor1 = (string)lstA.Items[lstA.SelectedIndex]; } catch { accentColor1 = accentColor.ToString(); }
+                translateString();
+                if (darkTheme)
+                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                else
+                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                materialSkinManager.ColorScheme = new ColorScheme(primaryColor, primaryColorDark, primaryColorLight, accentColor, TextShade.WHITE);
+            }
         }
 
 
