@@ -18,6 +18,7 @@ namespace Steam_Desktop_Authenticator
     public partial class InstallRedistribForm : MaterialForm
     {
         private bool inlineInstall = false;
+        Stopwatch sw = new Stopwatch();
 
         private readonly MaterialSkinManager materialSkinManager;
 
@@ -31,6 +32,7 @@ namespace Steam_Desktop_Authenticator
             string path = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
 
             WebClient client = new WebClient();
+            sw.Start();
             client.DownloadFileAsync(new Uri("https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe"), path);
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
             client.DownloadFileCompleted += Client_DownloadFileCompleted;
@@ -74,6 +76,7 @@ namespace Steam_Desktop_Authenticator
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            downloadStatus.Text = "Downloading Visual C++ Redistributable 2013" + Environment.NewLine + "Downloaded " + (e.BytesReceived / 1048576) + "MB(s) of " + (e.TotalBytesToReceive / 1048576) + "MBs." + Environment.NewLine + e.ProgressPercentage + "% downloaded" + Environment.NewLine + (e.BytesReceived / 1024d / sw.Elapsed.TotalSeconds).ToString("0.00") + " kb/s";
             progressBar1.Maximum = (int)e.TotalBytesToReceive;
             progressBar1.Value = (int)e.BytesReceived;
         }

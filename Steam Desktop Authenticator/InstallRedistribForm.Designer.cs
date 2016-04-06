@@ -29,41 +29,45 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallRedistribForm));
-            this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new MaterialSkin.Controls.MaterialProgressBar();
+            this.downloadStatus = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 70);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(289, 26);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Installing Visual C++ Redistributable 2013...";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // progressBar1
             // 
             this.progressBar1.Depth = 0;
-            this.progressBar1.Location = new System.Drawing.Point(12, 99);
+            this.progressBar1.Location = new System.Drawing.Point(12, 153);
             this.progressBar1.MouseState = MaterialSkin.MouseState.HOVER;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(289, 5);
+            this.progressBar1.Size = new System.Drawing.Size(315, 5);
             this.progressBar1.TabIndex = 1;
+            // 
+            // downloadStatus
+            // 
+            this.downloadStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.downloadStatus.Depth = 0;
+            this.downloadStatus.Font = new System.Drawing.Font("Roboto", 11F);
+            this.downloadStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.downloadStatus.Location = new System.Drawing.Point(12, 71);
+            this.downloadStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            this.downloadStatus.Name = "downloadStatus";
+            this.downloadStatus.Size = new System.Drawing.Size(315, 79);
+            this.downloadStatus.TabIndex = 2;
+            this.downloadStatus.Text = "Downloading Visual C++ Redistributable 2013";
             // 
             // InstallRedistribForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 112);
+            this.ClientSize = new System.Drawing.Size(339, 167);
+            this.Controls.Add(this.downloadStatus);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "InstallRedistribForm";
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Installing";
             this.ResumeLayout(false);
@@ -71,8 +75,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private MaterialSkin.Controls.MaterialProgressBar progressBar1;
+        private MaterialSkin.Controls.MaterialLabel downloadStatus;
     }
 }

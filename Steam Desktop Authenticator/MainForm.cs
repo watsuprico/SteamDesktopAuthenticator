@@ -454,6 +454,8 @@ namespace Steam_Desktop_Authenticator
 
         private async void timerTradesPopup_Tick(object sender, EventArgs e)
         {
+            timerTradesPopup.Stop();
+
             if (currentAccount == null || popupFrm.Visible) return;
 
             List<Confirmation> confs = new List<Confirmation>();
@@ -487,12 +489,15 @@ namespace Steam_Desktop_Authenticator
                         await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "";
                     }
-                }
+                    catch (WebException)
+                    {
+                    }
+                    }
 
                 lblStatus.Text = "";
                 statusBar.Value = 0;
 
-                if (confs.Count == 0) return;
+                if (confs.Count == 0) { timerTradesPopup.Start(); return; }
 
                 popupFrm.Confirmations = confs.ToArray();
                 popupFrm.Popup();
@@ -501,6 +506,8 @@ namespace Steam_Desktop_Authenticator
             {
                 lblStatus.Text = "";
             }
+
+            timerSteamGuard.Start();
         }
 
 

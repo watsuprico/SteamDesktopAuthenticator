@@ -81,6 +81,7 @@
             this.fileNames.TabIndex = 4;
             this.fileNames.Text = "";
             this.fileNames.WordWrap = false;
+            this.fileNames.TextChanged += new System.EventHandler(this.fileNames_TextChanged);
             // 
             // extractUpdate
             // 

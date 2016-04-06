@@ -30,25 +30,43 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DownloadUpdate));
             this.statusBar = new MaterialSkin.Controls.MaterialProgressBar();
+            this.downloadStatus = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
             // 
             // statusBar
             // 
+            this.statusBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.statusBar.Depth = 0;
-            this.statusBar.Location = new System.Drawing.Point(12, 73);
+            this.statusBar.Location = new System.Drawing.Point(12, 134);
             this.statusBar.MouseState = MaterialSkin.MouseState.HOVER;
             this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(266, 5);
+            this.statusBar.Size = new System.Drawing.Size(321, 5);
             this.statusBar.TabIndex = 0;
+            // 
+            // downloadStatus
+            // 
+            this.downloadStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.downloadStatus.Depth = 0;
+            this.downloadStatus.Font = new System.Drawing.Font("Roboto", 11F);
+            this.downloadStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.downloadStatus.Location = new System.Drawing.Point(12, 70);
+            this.downloadStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            this.downloadStatus.Name = "downloadStatus";
+            this.downloadStatus.Size = new System.Drawing.Size(321, 61);
+            this.downloadStatus.TabIndex = 1;
             // 
             // DownloadUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 88);
+            this.ClientSize = new System.Drawing.Size(345, 154);
+            this.Controls.Add(this.downloadStatus);
             this.Controls.Add(this.statusBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DownloadUpdate";
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -60,5 +78,6 @@
         #endregion
 
         private MaterialSkin.Controls.MaterialProgressBar statusBar;
+        private MaterialSkin.Controls.MaterialLabel downloadStatus;
     }
 }

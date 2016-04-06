@@ -45,7 +45,7 @@ namespace Steam_Desktop_Authenticator
             // run the program only once
             if (PriorProcess() != null)
             {
-                MessageBox.Show("Another instance of the app is already running.");
+                MessageBox.Show("Another instance of SDA is already running.");
                 return;
             }
 
