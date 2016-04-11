@@ -116,6 +116,7 @@
             this.MaximizeBox = false;
             this.Name = "InputForm";
             this.ShowInTaskbar = false;
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.ResumeLayout(false);

@@ -8,11 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin;
+using System.Drawing;
 
 namespace Steam_Desktop_Authenticator
 {
     public class Manifest
     {
+        [JsonProperty("version")]
+        public Version Version { get; set; } = new Version(1, 0);
+
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
@@ -37,19 +41,43 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
 
-        //Theme
+        [JsonProperty("check_for_updates")]
+        public bool CheckForUpdates { get; set; } = true;
+
+        #region Theme
         [JsonProperty("theme_primary")]
-        public Primary ThemePrimary { get; set; } = Primary.BlueGrey700;
+        public Primary ThemePrimary { get; set; } = Primary.Cyan900;
         [JsonProperty("theme_primaryd")]
-        public Primary ThemePrimaryD { get; set; } = Primary.BlueGrey700;
+        public Primary ThemePrimaryD { get; set; } = Primary.BlueGrey900;
         [JsonProperty("theme_primaryl")]
-        public Primary ThemePrimaryL { get; set; } = Primary.BlueGrey600;
+        public Primary ThemePrimaryL { get; set; } = Primary.Cyan900;
+        [JsonProperty("theme_primary_RGB")]
+        public Color ThemePrimary_RGB { get; set; } = Color.FromArgb(255, 0, 96, 100);
+        [JsonProperty("theme_primaryd_RGB")]
+        public Color ThemePrimaryD_RGB { get; set; } = Color.FromArgb(255, 0, 96, 100);
+        [JsonProperty("theme_primaryl_RGB")]
+        public Color ThemePrimaryL_RGB { get; set; } = Color.FromArgb(255,0, 96, 100);
 
         [JsonProperty("theme_accent")]
-        public Accent ThemeAccent { get; set; } = Accent.Cyan700;
+        public Accent ThemeAccent { get; set; } = Accent.Pink400;
+        [JsonProperty("theme_accent_RGB")]
+        public Color ThemeAccent_RGB { get; set; } = Color.FromArgb(255, 245, 0, 87);
+
+        [JsonProperty("theme_backgroundc")]
+        public Color ThemeBackground_RGB { get; set; } = Color.FromArgb(255, 51, 51, 51);
+        [JsonProperty("theme_backgroundEnabled")]
+        public bool ThemeBackground_Enabled { get; set; } = false;
+
+        [JsonProperty("other_backgroundsc")]
+        public Color ThemeOtherBackgrounds_Color { get; set; } = Color.FromArgb(SystemColors.ControlLight.R, SystemColors.ControlLight.B, SystemColors.ControlLight.B);
+        [JsonProperty("other_backgroundsd")]
+        public bool ThemeOtherBackgrounds_Dynamic { get; set; } = true;
 
         [JsonProperty("theme_main")]
         public bool ThemeDark { get; set; } = true;
+        [JsonProperty("theme_RGB")]
+        public bool ThemeRGB { get; set; } = false;
+        #endregion
 
 
 
@@ -112,19 +140,28 @@ namespace Steam_Desktop_Authenticator
         {
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
+            newManifest.Version = new Version(1, 0);
             newManifest.Encrypted = false;
             newManifest.PeriodicCheckingInterval = 5;
             newManifest.PeriodicChecking = false;
             newManifest.AutoConfirmMarketTransactions = false;
             newManifest.AutoConfirmTrades = false;
+            newManifest.CheckForUpdates = true;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 
             newManifest.ThemePrimary = Primary.BlueGrey700;
+            newManifest.ThemePrimaryD_RGB = newManifest.ThemePrimaryL_RGB = newManifest.ThemePrimary_RGB = Color.FromArgb(255, 0, 96, 100);
+            newManifest.ThemeAccent_RGB = Color.FromArgb(255, 245, 0, 87);
+            newManifest.ThemeBackground_RGB = Color.FromArgb(255, 51, 51, 51);
+            newManifest.ThemeBackground_Enabled = false;
+            newManifest.ThemeOtherBackgrounds_Color = Color.FromArgb(SystemColors.ControlLight.R, SystemColors.ControlLight.B, SystemColors.ControlLight.B);
+            newManifest.ThemeOtherBackgrounds_Dynamic = true;
             newManifest.ThemePrimaryD = Primary.BlueGrey700;
             newManifest.ThemePrimaryL = Primary.BlueGrey600;
             newManifest.ThemeAccent = Accent.Cyan700;
             newManifest.ThemeDark = true;
+            newManifest.ThemeRGB = false;
 
             // Take a pre-manifest version and generate a manifest for it.
             if (scanDir)

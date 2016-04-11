@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using MaterialSkin;
-using MaterialSkin.Controls;
+using System.Configuration;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -51,6 +46,23 @@ namespace Steam_Desktop_Authenticator
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+            if (config.AppSettings.Settings["EncryptManifest"] != null && config.AppSettings.Settings["ManifestEncrypted"] != null && config.AppSettings.Settings["EncryptionKey"] != null && config.AppSettings.Settings["EncryptionSALT"] != null && config.AppSettings.Settings["EncryptionIV"] != null)
+            {
+                if (config.AppSettings.Settings["ManifestEncrypted"].Value == "true" && config.AppSettings.Settings["EncryptManifest"].Value == "true")
+                {
+                    try {
+                        System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.DecryptData(config.AppSettings.Settings["EncryptionKey"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
+                        config.AppSettings.Settings["ManifestEncrypted"].Value = "false";
+                        config.Save(ConfigurationSaveMode.Minimal);
+                    }
+                    catch (Exception a)
+                    { MessageBox.Show("Uh oh! Failed to decrypt manifest." + Environment.NewLine + a.ToString()); }
+                }
+            }
+
 
             Application.Run(new SetTheme());
 

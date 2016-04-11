@@ -18,7 +18,7 @@ namespace Steam_Desktop_Authenticator
     public static class FileEncryptor
     {
         private const int PBKDF2_ITERATIONS = 50000; //Set to 50k to make program not unbearably slow. May increase in future.
-        private const int SALT_LENGTH = 8;
+        private const int SALT_LENGTH = 32;
         private const int KEY_SIZE_BYTES = 32;
         private const int IV_LENGTH = 16;
 

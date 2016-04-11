@@ -49,6 +49,7 @@
             this.btnCopy = new MaterialSkin.Controls.MaterialRaisedButton();
             this.txtAccount = new MaterialSkin.Controls.MaterialLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtLoginToken = new MaterialSkin.Controls.MaterialLabel();
             this.statusBar = new MaterialSkin.Controls.MaterialProgressBar();
             this.btnTradeConfirmations = new MaterialSkin.Controls.MaterialFlatButton();
             this.updateButton = new MaterialSkin.Controls.MaterialFlatButton();
@@ -74,7 +75,6 @@
             this.menuDeactivateAuthenticator = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.txtLoginToken = new MaterialSkin.Controls.MaterialLabel();
             this.menuStripTray.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -265,6 +265,21 @@
             this.panel1.Size = new System.Drawing.Size(465, 110);
             this.panel1.TabIndex = 15;
             // 
+            // txtLoginToken
+            // 
+            this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLoginToken.Depth = 0;
+            this.txtLoginToken.Font = new System.Drawing.Font("Roboto", 11F);
+            this.txtLoginToken.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.txtLoginToken.Location = new System.Drawing.Point(6, 35);
+            this.txtLoginToken.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtLoginToken.Name = "txtLoginToken";
+            this.txtLoginToken.Size = new System.Drawing.Size(387, 26);
+            this.txtLoginToken.TabIndex = 17;
+            this.txtLoginToken.Text = "No auth code available";
+            this.txtLoginToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // statusBar
             // 
             this.statusBar.Depth = 0;
@@ -358,7 +373,7 @@
             this.menuSettings,
             this.toolStripSeparator1,
             this.menuQuit});
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -450,7 +465,7 @@
             this.toolStripSeparator4,
             this.menuRemoveAccountFromManifest,
             this.menuDeactivateAuthenticator});
-            this.accountToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.accountToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
             this.accountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
@@ -513,21 +528,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(465, 413);
             this.panel3.TabIndex = 18;
-            // 
-            // txtLoginToken
-            // 
-            this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLoginToken.Depth = 0;
-            this.txtLoginToken.Font = new System.Drawing.Font("Roboto Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLoginToken.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.txtLoginToken.Location = new System.Drawing.Point(6, 35);
-            this.txtLoginToken.MouseState = MaterialSkin.MouseState.HOVER;
-            this.txtLoginToken.Name = "txtLoginToken";
-            this.txtLoginToken.Size = new System.Drawing.Size(387, 26);
-            this.txtLoginToken.TabIndex = 17;
-            this.txtLoginToken.Text = "No auth code available";
-            this.txtLoginToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 

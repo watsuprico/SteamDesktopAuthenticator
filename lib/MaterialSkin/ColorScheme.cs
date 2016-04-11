@@ -3,28 +3,40 @@ using System.Drawing;
 
 namespace MaterialSkin
 {
-	public class ColorScheme
+    public class ColorScheme
     {
-        public readonly Color PrimaryColor, DarkPrimaryColor, LightPrimaryColor, AccentColor, TextColor;
-        public readonly Pen PrimaryPen, DarkPrimaryPen, LightPrimaryPen, AccentPen, TextPen;
-        public readonly Brush PrimaryBrush, DarkPrimaryBrush, LightPrimaryBrush, AccentBrush, TextBrush;
-		
-		/// <summary>
-		/// Defines the Color Scheme to be used for all forms.
-		/// </summary>
-		/// <param name="primary">The primary color, a -500 color is suggested here.</param>
-		/// <param name="darkPrimary">A darker version of the primary color, a -700 color is suggested here.</param>
-		/// <param name="lightPrimary">A lighter version of the primary color, a -100 color is suggested here.</param>
-		/// <param name="accent">The accent color, a -200 color is suggested here.</param>
-		/// <param name="textShade">The text color, the one with the highest contrast is suggested.</param>
-		public ColorScheme(Primary primary, Primary darkPrimary, Primary lightPrimary, Accent accent, TextShade textShade)
+        public Color PrimaryColor, DarkPrimaryColor, LightPrimaryColor, AccentColor, TextColor;
+        public Pen PrimaryPen, DarkPrimaryPen, LightPrimaryPen, AccentPen, TextPen;
+        public Brush PrimaryBrush, DarkPrimaryBrush, LightPrimaryBrush, AccentBrush, TextBrush;
+
+        /// <summary>
+        /// Defines the Color Scheme to be used for all forms.
+        /// </summary>
+        /// <param name="primary">The primary color, a -500 color is suggested here.</param>
+        /// <param name="darkPrimary">A darker version of the primary color, a -700 color is suggested here.</param>
+        /// <param name="lightPrimary">A lighter version of the primary color, a -100 color is suggested here.</param>
+        /// <param name="accent">The accent color, a -200 color is suggested here.</param>
+        /// <param name="textShade">The text color, the one with the highest contrast is suggested.</param>
+        public ColorScheme(object primary, object darkPrimary, object lightPrimary, object accent, object textShade)
         {
-            //Color
-            PrimaryColor = ((int) primary).ToColor();
-            DarkPrimaryColor = ((int) darkPrimary).ToColor();
-            LightPrimaryColor = ((int) lightPrimary).ToColor();
-            AccentColor = ((int) accent).ToColor();
-			TextColor = ((int) textShade).ToColor();
+            if (primary is Primary && darkPrimary is Primary && lightPrimary is Primary && accent is Accent)
+            {
+                //Color
+                PrimaryColor = ((int)primary).ToColor();
+                DarkPrimaryColor = ((int)darkPrimary).ToColor();
+                LightPrimaryColor = ((int)lightPrimary).ToColor();
+                AccentColor = ((int)accent).ToColor();
+                TextColor = ((int)textShade).ToColor();
+            }
+            else
+            {
+                //Color
+                PrimaryColor = (Color)primary;
+                DarkPrimaryColor = (Color)darkPrimary;
+                LightPrimaryColor = (Color)lightPrimary;
+                AccentColor = (Color)accent;
+                TextColor = ((int)textShade).ToColor();
+            }
 
             //Pen
             PrimaryPen = new Pen(PrimaryColor);
@@ -39,6 +51,8 @@ namespace MaterialSkin
             LightPrimaryBrush = new SolidBrush(LightPrimaryColor);
             AccentBrush = new SolidBrush(AccentColor);
             TextBrush = new SolidBrush(TextColor);
+
+            
         }
     }
 

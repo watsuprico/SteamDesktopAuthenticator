@@ -30,15 +30,35 @@ namespace MaterialSkin
             }
         }
 
-	    private ColorScheme colorScheme;
+        private ColorScheme colorScheme;
         public ColorScheme ColorScheme
         {
-			get { return colorScheme; }
+            get { return colorScheme; }
             set
             {
-				colorScheme = value;
+                colorScheme = value;
                 UpdateBackgrounds();
             }
+        }
+
+            // Custom background
+        private Color customBackgroundColor;
+        private bool customBackground;
+        /// <summary>
+        /// This allows custom backgrounds to be set. (If you set a light background, also set the Theme to LIGHT to change the text to black).
+        /// </summary>
+        public Color bgColor
+        {
+            get { return customBackgroundColor; }
+            set { customBackgroundColor = value; UpdateBackgrounds(); }
+        }
+        /// <summary>
+        /// This dictates whether or not to enable the custom background
+        /// </summary>
+        public bool bgColorEnabled
+        {
+            get { return customBackground; }
+            set { customBackground = value; UpdateBackgrounds(); }
         }
 
         public enum Themes : byte
@@ -244,7 +264,10 @@ namespace MaterialSkin
             ROBOTO_REGULAR_11 = new Font(LoadFont(Resources.Roboto_Regular), 11f);
             ROBOTO_MEDIUM_11 = new Font(LoadFont(Resources.Roboto_Medium), 11f);
 			Theme = Themes.LIGHT;
-            ColorScheme = new ColorScheme(Primary.Cyan800, Primary.Cyan800, Primary.Cyan900, Accent.Amber700, TextShade.WHITE);
+            //customBackground = true;
+            //customBackgroundColor = Color.FromArgb(255, 51, 51, 51); // (The actual default background for Themes.DARK)
+            colorScheme = new ColorScheme(Primary.Cyan900, Primary.Cyan900, Primary.Cyan900, Accent.Amber200, TextShade.WHITE);
+            //colorScheme = new ColorScheme(Color.FromArgb(255,111,111,111), Color.FromArgb(255, 111, 111, 111), Color.FromArgb(255, 111, 111, 111), Color.FromArgb(255, 255, 11, 255), TextShade.WHITE);
         }
 
         public static MaterialSkinManager Instance
@@ -278,9 +301,10 @@ namespace MaterialSkin
             return privateFontCollection.Families.Last();
         }
 
-        private void UpdateBackgrounds()
+        public void UpdateBackgrounds()
         {
             var newBackColor = GetApplicationBackgroundColor();
+            if (customBackground) newBackColor = customBackgroundColor;
             foreach (var materialForm in formsToManage)
             {
                 materialForm.BackColor = newBackColor;

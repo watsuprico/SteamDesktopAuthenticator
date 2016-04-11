@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -15,13 +9,21 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class ThemeForm : MaterialForm
     {
-        Manifest manifest;
 
+        Manifest manifest;
+        #region Vars
         private readonly MaterialSkinManager materialSkinManager;
         private Primary primaryColor;
         private Primary primaryColorLight;
         private Primary primaryColorDark;
         private Accent accentColor;
+
+        private Color primaryColorRGB;
+        private Color primaryColorLightRGB;
+        private Color primaryColorDarkRGB;
+        private Color accentColorRGB;
+        private Color BackgroundColorRGB;
+
         private string accentColor1;
         private string primaryColor1;
         private string primaryColorLight1;
@@ -34,7 +36,13 @@ namespace Steam_Desktop_Authenticator
         public bool noTheme;
 
         private bool notSaved = false;
+        private bool rgbMode;
+        private bool CustomBackgrounds;
+        private Color OtherBackgrounds_Color;
+        private bool starting;
+        #endregion
 
+        #region Loading and closing methods
         public ThemeForm()
         {
             InitializeComponent();
@@ -49,26 +57,51 @@ namespace Steam_Desktop_Authenticator
 
         private void ThemeForm_Load(object sender, EventArgs e)
         {
+            manifest = Manifest.GetManifest();
+            starting = true;
+
+            lblRGBMode.Font = new Font("Roboto", 10);
+
+            if (manifest.ThemeRGB) { rgbMode = true; ThemeRGBTabs.SelectedIndex = 1; } // RGB enabled, show RGB tab
+            else { rgbMode = false; ThemeRGBTabs.SelectedIndex = 0; } // RGB disabled, show non-RGB tab
+
             primaryColor = manifest.ThemePrimary;
             primaryColorDark = manifest.ThemePrimaryD;
             primaryColorLight = manifest.ThemePrimaryL;
             accentColor = manifest.ThemeAccent;
+
+            primaryColorRGB = manifest.ThemePrimary_RGB;
+            primaryColorDarkRGB = manifest.ThemePrimaryD_RGB;
+            primaryColorLightRGB = manifest.ThemePrimaryL_RGB;
+            accentColorRGB = manifest.ThemeAccent_RGB;
+
+            CustomBackgrounds = manifest.ThemeBackground_Enabled;
+            chkCustomBackgrounds.Checked = manifest.ThemeBackground_Enabled;
+            BackgroundColorRGB = manifest.ThemeBackground_RGB;
+
+            if (manifest.ThemeOtherBackgrounds_Dynamic)
+                { if (manifest.ThemeDark) OtherBackgroundsExample.BackColor = OtherBackgrounds_Color = SystemColors.ControlLight; else OtherBackgrounds_Color = OtherBackgroundsExample.BackColor = SystemColors.ControlDark; }
+            else OtherBackgrounds_Color = manifest.ThemeOtherBackgrounds_Color;
+
+            chkDynamicOtherBackgrounds.Checked = manifest.ThemeOtherBackgrounds_Dynamic;
+            btnChangeOtherBackground.Enabled = btnChangeOtherBackground.Primary = !manifest.ThemeOtherBackgrounds_Dynamic;
+
+            setSelectors();
 
             darkTheme = manifest.ThemeDark;
             if (noTheme)
             {
                 savedStatus.Text = "Themes disabled!";
                 btnLoadTheme.Enabled = btnLoadTheme.Visible = true;
-                btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = false;
+                groupBox1.Enabled = chkCustomBackgrounds.Enabled = ThemeRGBTabsS.Enabled = btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = panPrimary.Enabled = panPrimaryDark.Enabled = panPrimaryLight.Enabled = panPrimaryAccent.Enabled = false;
             }
             else
             {
-                lstP.SelectedIndex = lstP.FindStringExact(primaryColor.ToString());
-                lstPDark.SelectedIndex = lstPDark.FindStringExact(primaryColorDark.ToString());
-                lstPLight.SelectedIndex = lstPLight.FindStringExact(primaryColorLight.ToString());
-                lstA.SelectedIndex = lstA.FindStringExact(accentColor.ToString());
+                setSelectors();
                 Save();
             }
+            reTheme(true);
+            starting = false;
         }
 
         private void ThemeForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,27 +114,140 @@ namespace Steam_Desktop_Authenticator
                     if (result == DialogResult.No)
                         e.Cancel = true;
                     else
-                    {
-                        manifest = Manifest.GetManifest(true);
-                        if (manifest.ThemeDark)
-                            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                        else
-                            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                        materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
-                    }
+                        reTheme(true);
                 }
                 else
+                    reTheme(true);
+            }
+        }
+        #endregion
+
+        #region Methods (functions)
+        // Sets the theme
+        private void reTheme(bool b)
+        {
+            try
+            {
+                if (!noTheme)
                 {
-                    manifest = Manifest.GetManifest(true);
-                    if (manifest.ThemeDark)
-                        materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                    else
-                        materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                    materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
+                    setSelectors();
+                    if (b) // If true set the theme as defined in the manifest (only when closing)
+                    {
+                        manifest = Manifest.GetManifest(true);
+                        if (manifest.ThemeDark) materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                        else materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+
+                        if (manifest.ThemeRGB) { materialSkinManager.bgColorEnabled = manifest.ThemeBackground_Enabled; materialSkinManager.bgColor = manifest.ThemeBackground_RGB; materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary_RGB, manifest.ThemePrimaryD_RGB, manifest.ThemePrimaryL_RGB, manifest.ThemeAccent_RGB, TextShade.WHITE); }
+                        else { materialSkinManager.bgColorEnabled = false; materialSkinManager.ColorScheme = new ColorScheme((object)manifest.ThemePrimary, (object)manifest.ThemePrimaryD, (object)manifest.ThemePrimaryL, (object)manifest.ThemeAccent, TextShade.WHITE); }
+                    }
+                    else // Other wise, set it based on our vars
+                    {
+                        if (darkTheme) materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                        else materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                        if (rgbMode) { materialSkinManager.bgColor = BackgroundColorRGB; materialSkinManager.bgColorEnabled = CustomBackgrounds; materialSkinManager.ColorScheme = new ColorScheme(primaryColorRGB, primaryColorDarkRGB, primaryColorLightRGB, accentColorRGB, TextShade.WHITE); }
+                        else { materialSkinManager.bgColorEnabled = false; materialSkinManager.ColorScheme = new ColorScheme((object)primaryColor, (object)primaryColorDark, (object)primaryColorLight, (object)accentColor, TextShade.WHITE); }
+                        if (rgbMode && CustomBackgrounds && BackgroundColorRGB != null)
+                            BackColor = BackgroundColorRGB;
+                    }
                 }
+            }
+            catch (Exception e)
+            { MessageBox.Show($"Error while applying theme: {e.ToString()}", "Error applying theme.", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        }
+
+        // Setup the selectors
+        private void setSelectors()
+        {
+            try
+            {
+                lstP.SelectedIndex = lstP.FindStringExact(primaryColor.ToString());
+                lstPDark.SelectedIndex = lstPDark.FindStringExact(primaryColorDark.ToString());
+                lstPLight.SelectedIndex = lstPLight.FindStringExact(primaryColorLight.ToString());
+                lstA.SelectedIndex = lstA.FindStringExact(accentColor.ToString());
+
+                panPrimary.BackColor = primaryColorRGB;
+                panPrimaryDark.BackColor = primaryColorDarkRGB;
+                panPrimaryLight.BackColor = primaryColorLightRGB;
+                panPrimaryAccent.BackColor = accentColorRGB;
+                panBackground.BackColor = BackgroundColorRGB;
+
+                PrimaryCAlpha.Value = primaryColorRGB.A;
+                PrimaryCDAlpha.Value = primaryColorDarkRGB.A;
+                PrimaryCLAlpha.Value = primaryColorLightRGB.A;
+                AccentCAlpha.Value = accentColorRGB.A;
+
+                groupBox1.BackColor = OtherBackgroundsExample.BackColor;
+                OtherBackgroundsExample.BackColor = OtherBackgrounds_Color;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("There was an error while setting up the selectors!" + Environment.NewLine + e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // Something was changed!
+
+        private void updateTheme()
+        {
+            if (!noTheme)
+            {
+                savedStatus.Text = "Not saved";
+                notSaved = btnSave.Enabled = btnSaveAndQuit.Enabled = true;
+                if (!rgbMode)
+                {
+                    try { primaryColor1 = (string)lstP.Items[lstP.SelectedIndex]; } catch { primaryColor1 = primaryColor.ToString(); }
+                    try { primaryColorDark1 = (string)lstPDark.Items[lstPDark.SelectedIndex]; } catch { primaryColorDark1 = primaryColorDark.ToString(); }
+                    try { primaryColorLight1 = (string)lstPLight.Items[lstPLight.SelectedIndex]; } catch { primaryColorLight1 = primaryColorLight.ToString(); }
+                    try { accentColor1 = (string)lstA.Items[lstA.SelectedIndex]; } catch { accentColor1 = accentColor.ToString(); }
+                    translateString();
+                }
+
+                #region Check if anything was *actually* changed
+                if (chkDynamicOtherBackgrounds.Checked == manifest.ThemeOtherBackgrounds_Dynamic && OtherBackgrounds_Color == manifest.ThemeOtherBackgrounds_Color && primaryColor == manifest.ThemePrimary && primaryColorDark == manifest.ThemePrimaryD && primaryColorLight == manifest.ThemePrimaryL && primaryColorRGB == manifest.ThemePrimary_RGB && primaryColorDarkRGB == manifest.ThemePrimaryD_RGB && primaryColorLightRGB == manifest.ThemePrimaryL_RGB && accentColor == manifest.ThemeAccent && accentColorRGB == manifest.ThemeAccent_RGB && rgbMode == manifest.ThemeRGB && CustomBackgrounds == manifest.ThemeBackground_Enabled && BackgroundColorRGB == manifest.ThemeBackground_RGB && darkTheme == manifest.ThemeDark)
+                { savedStatus.Text = "Already saved"; notSaved = btnSave.Enabled = btnSaveAndQuit.Enabled = false; } // Nothing actually changed )^:
+                #endregion
+                
+                reTheme(false);
+            }
+        }
+
+        // Save the settings
+
+        private void Save()
+        {
+            if (!noTheme)
+            {
+                savedStatus.Text = "Saving";
+                manifest.ThemePrimary = primaryColor;
+                manifest.ThemePrimaryD = primaryColorDark;
+                manifest.ThemePrimaryL = primaryColorLight;
+                manifest.ThemeAccent = accentColor;
+                manifest.ThemeDark = darkTheme;
+
+                manifest.ThemePrimary_RGB = primaryColorRGB;
+                manifest.ThemePrimaryD_RGB = primaryColorDarkRGB;
+                manifest.ThemePrimaryL_RGB = primaryColorLightRGB;
+                manifest.ThemeAccent_RGB = accentColorRGB;
+
+                if (rgbMode)
+                    manifest.ThemeRGB = true;
+                else
+                    manifest.ThemeRGB = false;
+
+                manifest.ThemeBackground_Enabled = chkCustomBackgrounds.Checked;
+                manifest.ThemeBackground_RGB = BackgroundColorRGB;
+
+                manifest.ThemeOtherBackgrounds_Color = OtherBackgrounds_Color;
+                manifest.ThemeOtherBackgrounds_Dynamic = chkDynamicOtherBackgrounds.Checked;
+
+                manifest.Save();
+                savedStatus.Text = "Saved";
+                notSaved = btnSave.Enabled = btnSaveAndQuit.Enabled = false;
+            }
+        }
+        #endregion
+
+        #region Buttons
         private void btnLightMode_Click(object sender, EventArgs e)
         {
             darkTheme = false;
@@ -132,41 +278,23 @@ namespace Steam_Desktop_Authenticator
                 noTheme = false;
                 ConfigurationManager.AppSettings["noTheme"] = "false";
 
-                manifest = Manifest.GetManifest(true);
-
-                if (manifest.ThemeDark)
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                else
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
+                reTheme(true);
 
                 savedStatus.Text = "Theme loaded";
+                groupBox1.Enabled = chkCustomBackgrounds.Enabled = ThemeRGBTabsS.Enabled = btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = panPrimary.Enabled = panPrimaryDark.Enabled = panPrimaryLight.Enabled = panPrimaryAccent.Enabled = true;
                 btnLoadTheme.Enabled = btnLoadTheme.Visible = false;
-                btnSave.Enabled = btnSave.Visible = btnSaveAndQuit.Enabled = lstA.Enabled = lstP.Enabled = lstPDark.Enabled = lstPLight.Enabled = true;
+                setSelectors();
                 Save();
             }
         }
+        #endregion
 
-        private void Save()
-        {
-            if (!noTheme)
-            {
-                savedStatus.Text = "Saving";
-                manifest.ThemePrimary = primaryColor;
-                manifest.ThemePrimaryD = primaryColorDark;
-                manifest.ThemePrimaryL = primaryColorLight;
-                manifest.ThemeAccent = accentColor;
-                manifest.ThemeDark = darkTheme;
-                manifest.Save();
-                savedStatus.Text = "Saved";
-                notSaved = btnSave.Enabled = btnSaveAndQuit.Enabled = false;
-            }
-        }
+        #region NonRGB selectors
+        // nonRGB setting changed
 
-        private void lstP_SelectedValueChanged(object sender, EventArgs e)
-        {
-                updateTheme();
-        }
+        private void lstP_SelectedValueChanged(object sender, EventArgs e) { updateTheme(); }
+
+        // Change that string to a Primary or an Accent type
 
         private void translateString()
         {
@@ -180,31 +308,10 @@ namespace Steam_Desktop_Authenticator
             accentColor = a;
         }
 
-        private void updateTheme()
-        {
-            if (!noTheme)
-            {
-                savedStatus.Text = "Not saved";
-                notSaved = true;
-                btnSave.Enabled = true;
-                btnSaveAndQuit.Enabled = true;
-                try { primaryColor1 = (string)lstP.Items[lstP.SelectedIndex]; } catch { primaryColor1 = primaryColor.ToString(); }
-                try { primaryColorDark1 = (string)lstPDark.Items[lstPDark.SelectedIndex]; } catch { primaryColorDark1 = primaryColorDark.ToString(); }
-                try { primaryColorLight1 = (string)lstPLight.Items[lstPLight.SelectedIndex]; } catch { primaryColorLight1 = primaryColorLight.ToString(); }
-                try { accentColor1 = (string)lstA.Items[lstA.SelectedIndex]; } catch { accentColor1 = accentColor.ToString(); }
-                translateString();
-                if (darkTheme)
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                else
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                materialSkinManager.ColorScheme = new ColorScheme(primaryColor, primaryColorDark, primaryColorLight, accentColor, TextShade.WHITE);
-            }
-        }
-
-
         private void stringToPrimary(string s)
         {
-            try {
+            try
+            {
                 if (s == "Red50") { p = Primary.Red50; }
                 else if (s == "Red100") { p = Primary.Red100; }
                 else if (s == "Red200") { p = Primary.Red200; }
@@ -405,7 +512,8 @@ namespace Steam_Desktop_Authenticator
 
         private void stringToAccent(string s)
         {
-            try {
+            try
+            {
                 if (s == "Red100") { a = Accent.Red100; }
                 if (s == "Red200") { a = Accent.Red200; }
                 if (s == "Red400") { a = Accent.Red400; }
@@ -487,5 +595,143 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("There was an error translating the string.");
             }
         }
+        #endregion
+
+        #region RGB selector's value(s) changed
+        private void panPrimary_Click(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                PrimaryCD.Color = primaryColorRGB;
+                if (PrimaryCD.ShowDialog() == DialogResult.OK)
+                {
+                    primaryColorRGB = PrimaryCD.Color;
+                    updateTheme();
+                }
+            }
+        }
+
+        private void panPrimaryDark_Click(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                PrimaryDCD.Color = primaryColorDarkRGB;
+                if (PrimaryDCD.ShowDialog() == DialogResult.OK)
+                {
+                    primaryColorDarkRGB = PrimaryDCD.Color;
+                    updateTheme();
+                }
+            }
+        }
+
+        private void panPrimaryLight_Click(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                PrimaryLCD.Color = primaryColorDarkRGB;
+                if (PrimaryLCD.ShowDialog() == DialogResult.OK)
+                {
+                    primaryColorLightRGB = PrimaryLCD.Color;
+                    updateTheme();
+                }
+            }
+        }
+
+        private void panPrimaryAccent_Click(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                AccentCD.Color = accentColorRGB;
+                if (AccentCD.ShowDialog() == DialogResult.OK)
+                {
+                    accentColorRGB = AccentCD.Color;
+                    updateTheme();
+                }
+            }
+        }
+        private void lblBackgroundColor_Click(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                BackgroundCD.Color = BackgroundColorRGB;
+                if (BackgroundCD.ShowDialog() == DialogResult.OK)
+                {
+                    BackgroundColorRGB = BackgroundCD.Color;
+                    System.Threading.Thread.Sleep(100);
+                    updateTheme();
+                }
+            }
+        }
+        private void chkCustomBackgrounds_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!noTheme)
+            {
+                CustomBackgrounds = chkCustomBackgrounds.Checked;
+                updateTheme();
+            }
+        }
+        #endregion
+
+        #region Alpha selector's value(s) changed
+        private void PrimaryCAlpha_ValueChanged(object sender, EventArgs e)
+        { primaryColorRGB = Color.FromArgb((int)PrimaryCAlpha.Value, primaryColorRGB.R, primaryColorRGB.G, primaryColorRGB.B); updateTheme(); }
+
+        private void PrimaryCDAlpha_ValueChanged(object sender, EventArgs e)
+        { primaryColorDarkRGB = Color.FromArgb((int)PrimaryCDAlpha.Value, primaryColorDarkRGB.R, primaryColorDarkRGB.G, primaryColorDarkRGB.B); updateTheme(); }
+
+        private void PrimaryCLAlpha_ValueChanged(object sender, EventArgs e)
+        { primaryColorLightRGB = Color.FromArgb((int)PrimaryCLAlpha.Value, primaryColorLightRGB.R, primaryColorLightRGB.G, primaryColorLightRGB.B); updateTheme(); }
+
+        private void AccentCAlpha_ValueChanged(object sender, EventArgs e)
+        { accentColorRGB = Color.FromArgb((int)AccentCAlpha.Value, accentColorRGB.R, accentColorRGB.G, accentColorRGB.B); updateTheme(); }
+        #endregion
+
+        // The tab changed (changing RGB mode with it)
+        private void ThemeRGBTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ThemeRGBTabs.SelectedIndex == 0) // On the non-RGB selectors
+                rgbMode = false;
+            else // On the RGB selectors
+                rgbMode = true;
+            lblRGBMode.Text = $"RGB Mode {rgbMode}!" + Environment.NewLine + "(Based on tag selection)" + Environment.NewLine + "Double clicking \"Enable custom backgrounds\" will fix many theme problems.";
+            updateTheme();
+        }
+
+        private void BackgroundCAlpha_ValueChanged(object sender, EventArgs e)
+        {
+            this.Opacity = (int)BackgroundCAlpha.Value;
+        }
+
+
+        #region Other background settings
+        private void chkDynamicOtherBackgrounds_CheckChanged(object sender, EventArgs e)
+        {
+            if (!starting)
+            {
+                btnChangeOtherBackground.Enabled = btnChangeOtherBackground.Primary = !chkDynamicOtherBackgrounds.Checked;
+                if (chkDynamicOtherBackgrounds.Checked)
+                {
+                    if (darkTheme) OtherBackgroundsExample.BackColor = OtherBackgrounds_Color = SystemColors.ControlLight;
+                    else OtherBackgroundsExample.BackColor = OtherBackgrounds_Color = SystemColors.ControlDark;
+                }
+                else OtherBackgroundsExample.BackColor = OtherBackgrounds_Color = manifest.ThemeOtherBackgrounds_Color;
+                updateTheme();
+            }
+        }
+
+        private void btnChangeOtherBackground_Click(object sender, EventArgs e)
+        {
+            if (!chkDynamicOtherBackgrounds.Checked)
+            {
+                OtherBackgroundsCD.Color = OtherBackgrounds_Color;
+                if (OtherBackgroundsCD.ShowDialog() == DialogResult.OK)
+                {
+                    OtherBackgrounds_Color = OtherBackgroundsCD.Color;
+                    OtherBackgroundsExample.BackColor = OtherBackgroundsCD.Color;
+                    updateTheme();
+                }
+            }
+        }
+        #endregion
     }
 }

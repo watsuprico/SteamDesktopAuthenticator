@@ -43,12 +43,19 @@ namespace Steam_Desktop_Authenticator
             {
                 // Get latest manifest
                 manifest = Manifest.GetManifest(true);
-
-                if (manifest.ThemeDark)
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                else
-                    materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary, manifest.ThemePrimaryD, manifest.ThemePrimaryL, manifest.ThemeAccent, TextShade.WHITE);
+                try {
+                    if (manifest.ThemeDark) materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                    else materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                    if (manifest.ThemeRGB)
+                    {
+                        materialSkinManager.bgColorEnabled = manifest.ThemeBackground_Enabled;
+                        materialSkinManager.bgColor = manifest.ThemeBackground_RGB;
+                        materialSkinManager.ColorScheme = new ColorScheme(manifest.ThemePrimary_RGB, manifest.ThemePrimaryD_RGB, manifest.ThemePrimaryL_RGB, manifest.ThemeAccent_RGB, TextShade.WHITE);
+                    }
+                    else { materialSkinManager.bgColorEnabled = false; materialSkinManager.ColorScheme = new ColorScheme((object)manifest.ThemePrimary, (object)manifest.ThemePrimaryD, (object)manifest.ThemePrimaryL, (object)manifest.ThemeAccent, TextShade.WHITE); }
+                }
+                catch (Exception ee)
+                { MessageBox.Show($"Error while applying theme: {ee.ToString()}", "Error applying theme.", MessageBoxButtons.OK, MessageBoxIcon.Error); }
             }
             Close();
         }
@@ -58,21 +65,11 @@ namespace Steam_Desktop_Authenticator
             Application.Exit();
         }
 
-        private void KeyPressed(object sender, KeyEventArgs e)
-        {
-            if (Control.ModifierKeys == Keys.Shift && Control.ModifierKeys == Keys.F10)
-            {
-                //Reset
-                manifest.FirstRun = true;
-                manifest.Save();
-            }
-        }
-
         private void btnReset_Click(object sender, EventArgs e)
         {
             manifest.FirstRun = true;
             manifest.Save();
-            Close();
+            Application.Restart();
         }
     }
 }

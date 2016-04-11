@@ -43,6 +43,7 @@
             this.btnQuit.AutoSize = true;
             this.btnQuit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnQuit.Depth = 0;
+            this.btnQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnQuit.Location = new System.Drawing.Point(286, 46);
             this.btnQuit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnQuit.MouseState = MaterialSkin.MouseState.HOVER;
@@ -72,7 +73,7 @@
             // 
             // setThemeTime
             // 
-            this.setThemeTime.Interval = 300;
+            this.setThemeTime.Interval = 400;
             this.setThemeTime.Tick += new System.EventHandler(this.setThemeTime_Tick);
             // 
             // materialLabel1
@@ -123,7 +124,6 @@
             this.Text = "Loading Steam Desktop Authenticator";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SetTheme_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyPressed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

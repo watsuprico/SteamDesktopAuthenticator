@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Drawing;
+using System.Configuration;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -45,12 +46,21 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            this.manifest = Manifest.GetManifest();
+
             Font font = new Font("Roboto Light", 9.5f);
             txtLoginToken.Font = font;
+            try
+            {
+                if (manifest.ThemeOtherBackgrounds_Dynamic)
+                { if (manifest.ThemeDark) listAccounts.BackColor = SystemColors.ControlLight; else listAccounts.BackColor = SystemColors.ControlDark; }
+                else listAccounts.BackColor = manifest.ThemeOtherBackgrounds_Color;
+            }
+            catch { }
+            try { if (manifest.ThemeDark) fileToolStripMenuItem.ForeColor = accountToolStripMenuItem.ForeColor = lblStatus.ForeColor = SystemColors.ControlLight; else fileToolStripMenuItem.ForeColor = accountToolStripMenuItem.ForeColor = lblStatus.ForeColor = Color.Black; } catch {}
 
             this.updateButton.Text = String.Format("Check for an update | v{0}", Application.ProductVersion);
             updateButton.Primary = false;
-            this.manifest = Manifest.GetManifest();
 
             // Make sure we don't show that welcome dialog again
             this.manifest.FirstRun = false;
@@ -79,7 +89,8 @@ namespace Steam_Desktop_Authenticator
             loadSettings();
             loadAccountsList();
 
-            checkForUpdates();
+            if (manifest.CheckForUpdates)
+                checkForUpdates();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -97,6 +108,24 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Encrypt manifest is needed
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+            if (config.AppSettings.Settings["EncryptManifest"] != null && config.AppSettings.Settings["ManifestEncrypted"] != null && config.AppSettings.Settings["EncryptionKey"] != null && config.AppSettings.Settings["EncryptionSALT"] != null && config.AppSettings.Settings["EncryptionIV"] != null)
+            {
+                if (config.AppSettings.Settings["ManifestEncrypted"].Value == "false" && config.AppSettings.Settings["EncryptManifest"].Value == "true")
+                {
+                    try
+                    {
+                        System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.EncryptData(config.AppSettings.Settings["EncryptionKey"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
+                        config.AppSettings.Settings["ManifestEncrypted"].Value = "true";
+                        config.Save(ConfigurationSaveMode.Minimal);
+                    }
+                    catch (Exception a)
+                    { MessageBox.Show("Uh oh! Failed to encrypt manifest." + Environment.NewLine + a.ToString()); }
+                }
+            }
+
             Application.Exit();
         }
 
@@ -196,18 +225,6 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (newVersion == null || currentVersion == null)
-            {
-                checkForUpdates();
-            }
-            else
-            {
-                compareVersions();
-            }
-        }
-
         private void updateButtonClicked(object sender, EventArgs e)
         {
             if (newVersion == null || currentVersion == null)
@@ -286,6 +303,15 @@ namespace Steam_Desktop_Authenticator
         {
             new ThemeForm().ShowDialog();
             manifest = Manifest.GetManifest(true);
+
+            try
+            {
+                if (manifest.ThemeOtherBackgrounds_Dynamic)
+                    { if (manifest.ThemeDark) listAccounts.BackColor = SystemColors.ControlLight; else listAccounts.BackColor = SystemColors.ControlDark; }
+                else listAccounts.BackColor = manifest.ThemeOtherBackgrounds_Color;
+            }
+            catch { }
+            try { if (manifest.ThemeDark) fileToolStripMenuItem.ForeColor = accountToolStripMenuItem.ForeColor = lblStatus.ForeColor = SystemColors.ControlLight; else fileToolStripMenuItem.ForeColor = accountToolStripMenuItem.ForeColor = lblStatus.ForeColor = Color.Black; } catch { }
         }
 
         private void menuDeactivateAuthenticator_Click(object sender, EventArgs e)

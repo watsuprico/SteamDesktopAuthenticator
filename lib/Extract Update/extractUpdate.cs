@@ -36,7 +36,6 @@ namespace Extract_Update
         {
             try
             {
-
                 if (Directory.GetCurrentDirectory().EndsWith(@"\update")) //IF we are IN the update folder
                 {
                     if (File.Exists(Directory.GetCurrentDirectory() + @"\update.zip"))
