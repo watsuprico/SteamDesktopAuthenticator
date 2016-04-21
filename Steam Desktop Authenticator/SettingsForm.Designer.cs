@@ -43,6 +43,8 @@
             this.txtManifestPasskey = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.chkEncryptManifest = new MaterialSkin.Controls.MaterialCheckBox();
             this.SettingsSelector = new MaterialSkin.Controls.MaterialTabSelector();
+            this.chkNewSalt = new MaterialSkin.Controls.MaterialCheckBox();
+            this.chkDecryptOnStart = new MaterialSkin.Controls.MaterialCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -196,6 +198,8 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.chkDecryptOnStart);
+            this.tabPage2.Controls.Add(this.chkNewSalt);
             this.tabPage2.Controls.Add(this.chkUpdates);
             this.tabPage2.Controls.Add(this.txtManifestPasskey);
             this.tabPage2.Controls.Add(this.chkEncryptManifest);
@@ -211,7 +215,7 @@
             this.chkUpdates.AutoSize = true;
             this.chkUpdates.Depth = 0;
             this.chkUpdates.Font = new System.Drawing.Font("Roboto", 10F);
-            this.chkUpdates.Location = new System.Drawing.Point(5, 33);
+            this.chkUpdates.Location = new System.Drawing.Point(5, 102);
             this.chkUpdates.Margin = new System.Windows.Forms.Padding(0);
             this.chkUpdates.MouseLocation = new System.Drawing.Point(-1, -1);
             this.chkUpdates.MouseState = MaterialSkin.MouseState.HOVER;
@@ -268,6 +272,39 @@
             this.SettingsSelector.Size = new System.Drawing.Size(338, 23);
             this.SettingsSelector.TabIndex = 9;
             // 
+            // chkNewSalt
+            // 
+            this.chkNewSalt.AutoSize = true;
+            this.chkNewSalt.Depth = 0;
+            this.chkNewSalt.Font = new System.Drawing.Font("Roboto", 10F);
+            this.chkNewSalt.Location = new System.Drawing.Point(43, 32);
+            this.chkNewSalt.Margin = new System.Windows.Forms.Padding(0);
+            this.chkNewSalt.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.chkNewSalt.MouseState = MaterialSkin.MouseState.HOVER;
+            this.chkNewSalt.Name = "chkNewSalt";
+            this.chkNewSalt.Ripple = true;
+            this.chkNewSalt.Size = new System.Drawing.Size(241, 30);
+            this.chkNewSalt.TabIndex = 3;
+            this.chkNewSalt.Text = "Create a new salt when encrypting";
+            this.chkNewSalt.UseVisualStyleBackColor = true;
+            // 
+            // chkDecryptOnStart
+            // 
+            this.chkDecryptOnStart.AutoSize = true;
+            this.chkDecryptOnStart.Depth = 0;
+            this.chkDecryptOnStart.Font = new System.Drawing.Font("Roboto", 10F);
+            this.chkDecryptOnStart.Location = new System.Drawing.Point(43, 63);
+            this.chkDecryptOnStart.Margin = new System.Windows.Forms.Padding(0);
+            this.chkDecryptOnStart.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.chkDecryptOnStart.MouseState = MaterialSkin.MouseState.HOVER;
+            this.chkDecryptOnStart.Name = "chkDecryptOnStart";
+            this.chkDecryptOnStart.Ripple = true;
+            this.chkDecryptOnStart.Size = new System.Drawing.Size(215, 30);
+            this.chkDecryptOnStart.TabIndex = 4;
+            this.chkDecryptOnStart.Text = "Decrypt automatically on start";
+            this.chkDecryptOnStart.UseVisualStyleBackColor = true;
+            this.chkDecryptOnStart.CheckedChanged += new System.EventHandler(this.chkDecryptOnStart_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnSave;
@@ -311,5 +348,7 @@
         private MaterialSkin.Controls.MaterialCheckBox chkEncryptManifest;
         private MaterialSkin.Controls.MaterialSingleLineTextField txtManifestPasskey;
         private MaterialSkin.Controls.MaterialCheckBox chkUpdates;
+        private MaterialSkin.Controls.MaterialCheckBox chkNewSalt;
+        private MaterialSkin.Controls.MaterialCheckBox chkDecryptOnStart;
     }
 }

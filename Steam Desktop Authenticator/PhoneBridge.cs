@@ -243,7 +243,7 @@ namespace Steam_Desktop_Authenticator
 
             mre.Reset();
             OnOutputLog("Extracting (5/5)");
-            ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
+            ExecuteCommand("adb shell \"rm -rR /sdcard/steamauth\" & echo Done");
             mre.Wait();
 
             string[] files = Directory.EnumerateFiles("steamguard").ToArray<string>();

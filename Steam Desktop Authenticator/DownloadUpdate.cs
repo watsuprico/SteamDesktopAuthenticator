@@ -89,7 +89,7 @@ namespace Steam_Desktop_Authenticator
                 DialogResult res = MessageBox.Show("Update and restart SDA?", "Update using Extract Update.exe?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (res == DialogResult.Yes)
                 {
-                    System.Diagnostics.Process.Start(Manifest.GetExecutableDir() + "\\update\\Extract Update.exe");
+                    System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "\\update\\Extract Update.exe");
                     Application.Exit();
                 }
                 else

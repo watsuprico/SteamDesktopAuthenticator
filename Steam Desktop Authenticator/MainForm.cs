@@ -108,7 +108,7 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Encrypt manifest is needed
+            // Encrypt manifest if needed
 
             Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
             if (config.AppSettings.Settings["EncryptManifest"] != null && config.AppSettings.Settings["ManifestEncrypted"] != null && config.AppSettings.Settings["EncryptionKey"] != null && config.AppSettings.Settings["EncryptionSALT"] != null && config.AppSettings.Settings["EncryptionIV"] != null)
@@ -117,8 +117,23 @@ namespace Steam_Desktop_Authenticator
                 {
                     try
                     {
-                        System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.EncryptData(config.AppSettings.Settings["EncryptionKey"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
+                        if (config.AppSettings.Settings["EncryptionNewSalt"] != null)
+                            if (config.AppSettings.Settings["EncryptionNewSalt"].Value == "true")
+                            {
+                                config.AppSettings.Settings["EncryptionSALT"].Value = FileEncryptor.GetRandomSalt();
+                            }
+
+                        System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.EncryptData(ConfigurationManager.AppSettings["EncrpytKey"], config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
                         config.AppSettings.Settings["ManifestEncrypted"].Value = "true";
+                        if (config.AppSettings.Settings["EncryptionDeStart"] != null)
+                        {
+                            if (config.AppSettings.Settings["EncryptionDeStart"].Value == "true")
+                                config.AppSettings.Settings["EncryptionSTARTUP"].Value = FileEncryptor.EncryptData(config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, ConfigurationManager.AppSettings["EncrpytKey"]);
+                            else
+                                config.AppSettings.Settings["EncryptionSTARTUP"].Value = "";
+                        }
+                        config.AppSettings.Settings["EncryptionKey"].Value = FileEncryptor.EncryptData(ConfigurationManager.AppSettings["EncrpytKey"], config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, ConfigurationManager.AppSettings["EncrpytKey"]);
+                        ConfigurationManager.AppSettings["EncrpytKey"] = ""; // Destory
                         config.Save(ConfigurationSaveMode.Minimal);
                     }
                     catch (Exception a)
@@ -169,9 +184,11 @@ namespace Steam_Desktop_Authenticator
             {
                 InputForm currentPassKeyForm = new InputForm("Enter current passkey", true);
                 currentPassKeyForm.ShowDialog();
+                currentPassKeyForm.txtBox.UseSystemPasswordChar = true;
 
                 if (currentPassKeyForm.Canceled)
                 {
+                    currentPassKeyForm.txtBox.UseSystemPasswordChar = false;
                     return;
                 }
 
@@ -182,11 +199,13 @@ namespace Steam_Desktop_Authenticator
 
                 if (changePassKeyForm.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
                 {
+                    currentPassKeyForm.txtBox.UseSystemPasswordChar = false;
                     return;
                 }
 
                 InputForm changePassKeyForm2 = new InputForm("Confirm your new passkey.", true);
                 changePassKeyForm2.ShowDialog();
+                currentPassKeyForm.txtBox.UseSystemPasswordChar = false;
 
                 if (changePassKeyForm2.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
                 {

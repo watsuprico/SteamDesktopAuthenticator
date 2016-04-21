@@ -47,45 +47,82 @@ namespace Steam_Desktop_Authenticator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            bool close = false;
+            bool selfcrypt = false;
 
             Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
             if (config.AppSettings.Settings["EncryptManifest"] != null && config.AppSettings.Settings["ManifestEncrypted"] != null && config.AppSettings.Settings["EncryptionKey"] != null && config.AppSettings.Settings["EncryptionSALT"] != null && config.AppSettings.Settings["EncryptionIV"] != null)
             {
                 if (config.AppSettings.Settings["ManifestEncrypted"].Value == "true" && config.AppSettings.Settings["EncryptManifest"].Value == "true")
                 {
-                    try {
-                        System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.DecryptData(config.AppSettings.Settings["EncryptionKey"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
-                        config.AppSettings.Settings["ManifestEncrypted"].Value = "false";
-                        config.Save(ConfigurationSaveMode.Minimal);
+                    // Decrypt by ourselfs?
+                    if (config.AppSettings.Settings["EncryptionDeStart"] != null && config.AppSettings.Settings["EncryptionSTARTUP"] != null)
+                    {
+                        if (config.AppSettings.Settings["EncryptionDeStart"].Value == "true" && config.AppSettings.Settings["EncryptionSTARTUP"].Value != "")
+                            selfcrypt = true;
+                        else
+                            selfcrypt = false;
                     }
-                    catch (Exception a)
-                    { MessageBox.Show("Uh oh! Failed to decrypt manifest." + Environment.NewLine + a.ToString()); }
+                    else
+                        selfcrypt = false;
+
+                    string curPassKey = "";
+
+                    if (selfcrypt)
+                        curPassKey = FileEncryptor.DecryptData(config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, config.AppSettings.Settings["EncryptionSTARTUP"].Value);
+                    else
+                    {
+                        // Get the code
+                        InputForm currentPassKeyForm = new InputForm("Enter current passkey", true);
+                        currentPassKeyForm.StartPosition = FormStartPosition.CenterScreen; currentPassKeyForm.txtBox.UseSystemPasswordChar = true;
+                        currentPassKeyForm.ShowDialog();
+                        currentPassKeyForm.StartPosition = FormStartPosition.CenterParent;
+                        if (currentPassKeyForm.Canceled) { currentPassKeyForm.txtBox.UseSystemPasswordChar = false; return; }
+                        curPassKey = currentPassKeyForm.txtBox.Text; currentPassKeyForm.txtBox.UseSystemPasswordChar = false;
+                        currentPassKeyForm.txtBox.Text = "";
+                    }
+
+                    if (config.AppSettings.Settings["EncryptionKey"].Value == FileEncryptor.EncryptData(curPassKey, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, curPassKey))
+                        try
+                        {
+                            System.IO.File.WriteAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json", FileEncryptor.DecryptData(curPassKey, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, System.IO.File.ReadAllText(Manifest.GetExecutableDir() + "\\maFiles\\manifest.json")));
+                            config.AppSettings.Settings["ManifestEncrypted"].Value = "false";
+                            config.AppSettings.Settings["EncryptionKey"].Value = FileEncryptor.EncryptData(curPassKey, config.AppSettings.Settings["EncryptionSALT"].Value, config.AppSettings.Settings["EncryptionIV"].Value, curPassKey);
+                            ConfigurationManager.AppSettings["EncrpytKey"] = curPassKey;
+                            config.Save(ConfigurationSaveMode.Minimal);
+                        }
+                        catch (Exception a)
+                        { MessageBox.Show("Uh oh! Failed to decrypt manifest." + Environment.NewLine + a.ToString()); }
+                    else
+                    { MessageBox.Show("Incorrect passkey )^:" + Environment.NewLine + "If you enabled auto decrypt, you're pretty much screwed..", "Incorrect passkey", MessageBoxButtons.OK, MessageBoxIcon.Error); Application.Exit(); close = true; }
                 }
             }
 
-
-            Application.Run(new SetTheme());
-
-            Manifest man = Manifest.GetManifest();
-            if(man.FirstRun)
+            if (!close)
             {
-                // Install VC++ Redist and wait
-                new InstallRedistribForm().ShowDialog();
+                Application.Run(new SetTheme());
 
-                if (man.Entries.Count > 0)
+                Manifest man = Manifest.GetManifest();
+                if (man.FirstRun)
                 {
-                    // Already has accounts, just run
-                    Application.Run(new MainForm());
+                    // Install VC++ Redist and wait
+                    new InstallRedistribForm().ShowDialog();
+
+                    if (man.Entries.Count > 0)
+                    {
+                        // Already has accounts, just run
+                        Application.Run(new MainForm());
+                    }
+                    else
+                    {
+                        // No accounts, run welcome form
+                        Application.Run(new WelcomeForm());
+                    }
                 }
                 else
                 {
-                    // No accounts, run welcome form
-                    Application.Run(new WelcomeForm());
+                    Application.Run(new MainForm());
                 }
-            }
-            else
-            {
-                Application.Run(new MainForm());
             }
         }
     }

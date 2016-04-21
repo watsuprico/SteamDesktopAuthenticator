@@ -89,9 +89,9 @@ namespace Extract_Update
                                 else
                                 {
                                     fileNames.Text = fileNames.Text + Environment.NewLine + "Extracting: " + entry.FullName;
-                                    if (File.Exists(Directory.GetCurrentDirectory() + entry.FullName))
-                                        System.IO.File.Delete(Directory.GetCurrentDirectory() + entry.FullName);
-                                    entry.ExtractToFile(Directory.GetCurrentDirectory() + entry.FullName);
+                                    if (File.Exists(Directory.GetCurrentDirectory() + "\\" + entry.FullName))
+                                        System.IO.File.Delete(Directory.GetCurrentDirectory() + "\\" + entry.FullName);
+                                    entry.ExtractToFile(Directory.GetCurrentDirectory() + "\\" + entry.FullName);
                                 }
                                 statusBar.Value = i;
                             }
