@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Steam Desktop Authenticator by watsuprico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Steam Desktop Authenticator</h1>
+      <h2 class="project-tagline">Desktop implementation of Steam&#39;s mobile authenticator app</h2>
+      <a href="https://github.com/watsuprico/SteamDesktopAuthenticator" class="btn">View on GitHub</a>
+      <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1 align="center">
+<a id="------steam-desktop-authenticator-sda" class="anchor" href="#------steam-desktop-authenticator-sda" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  <img src="http://i.imgur.com/60QOYqG.jpg">
+  <br>
+  Steam Desktop Authenticator (SDA)
+</h1>
+
+<p align="center">
+  A desktop implementation of Steam's mobile authenticator app.<br>
+  
+</p>
+
+<h3 align="center">
+<a id="--download-here" class="anchor" href="#--download-here" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/releases/latest">Download here</a>
+</h3>
+
+<p align="center">
+  <b>REMEMBER: Always make backups of your <code>maFiles</code> directory! If you lose your encryption key or delete <code>maFiles</code> by accident AND you didn't save your revocation code, you are screwed.</b>
+  <br>
+  <br>
+  IF you lost your <code>maFiles</code> OR lost your encryption key, go <a href="https://store.steampowered.com/twofactor/manage">here</a> and click "Remove Authenticator" then enter your revocation code that you wrote down when you first added your account to SDA.
+</p>
+
+<p><br>
+<br></p>
+
+<h1 align="center">
+<a id="--setting-up-sda" class="anchor" href="#--setting-up-sda" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  Setting up SDA
+</h1>
+
+<ul>
+<li>Download and install <a href="http://go.microsoft.com/fwlink/?LinkId=397707">.NET Framework 4.5.2</a> if you are running Windows 7 or below.</li>
+<li>Visit <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/releases">the releases page</a> and download the <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/releases/latest">latest release</a>. (Should be named SDA_X_X_X_X.zip)</li>
+<li>Extract the files inside the zip anywhere on your computer, (the desktop is a good example). Please remember to keep the files save, as these allow you to login to your account.</li>
+<li>Run 'Steam Desktop Authenticator.exe', allow 'vcredist_x86.exe' to run and install, (needed for the trade confirmations browser), and click next to setup your account. <img src="http://i.imgur.com/lRGJ7f8.png">
+
+<ul>
+<li>Login to Steam and follow the instructions to set it up. <b><i>Please know that you'll need a way of recieving SMS messages. <a href="google.com/voice">Google Voice</a> offers this for free.</i></b>
+</li>
+<li>After setting your account up, you'll be asked to enable encryption. While not necessary, it is recommended you both enable encryption and use a different password then the one for Steam. <img src="http://i.imgur.com/OtRTW48.png">
+</li>
+<li>For your safety, remember to get <a href="https://store.steampowered.com/twofactor/manage">Steam Guard backup codes</a> and make a backup of SDA!</li>
+</ul>
+</li>
+</ul>
+
+<p><br>
+<br></p>
+
+<h2 align="center">
+<a id="--compiling-sda-for-yourself" class="anchor" href="#--compiling-sda-for-yourself" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  Compiling SDA for yourself
+</h2>
+
+<ul>
+<li>Download &amp; Install the free <a href="https://www.visualstudio.com/post-download-vs?sku=community&amp;clcid=0x409">Visual Studio Community</a>.</li>
+<li>Download &amp; Install <a href="https://desktop.github.com/">GitHub Desktop</a>.</li>
+<li>Open GitHub Desktop &amp; sign in with your GitHub account.</li>
+<li>Clone the repository by clicking: <a href="github-windows://openRepo/https://github.com/Watsuprico/SteamDesktopAuthenticator">GitHub Desktop</a>
+</li>
+<li>Open the .sln file with Visual Studio</li>
+<li>Build it (<code>CTRL + Shift + B</code>)</li>
+</ul>
+
+<p><strong>OR</strong></p>
+
+<ul>
+<li>
+<a href="https://github.com/watsuprico/SteamDesktopAuthenticator/archive/master.zip">Download SDA's master branch</a> and <a href="https://github.com/geel9/SteamAuth/archive/master.zip">download Steam Auth</a> </li>
+<li>Extract SDA's master brach anywhere. <em>(Like <code>C:\Users\%username%\Desktop\SDA-Master\</code>)</em>
+
+<ul>
+<li>Extract Steam Auth into <code>\lib\SteamAuth\</code> <em>(Like <code>C:\Users\%username%\Desktop\SDA-Master\lib\SteamAuth\</code>)</em>
+</li>
+</ul>
+</li>
+</ul>
+
+<p><br>
+<br></p>
+
+<h2 align="center">
+<a id="--troubleshooting-sda" class="anchor" href="#--troubleshooting-sda" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  Troubleshooting SDA
+</h2>
+
+<p>If your problem doesn't appear in the <a href="https://github.com/watsuprico/SteamDesktopAuthenticator/wiki">Wiki</a>, or none of the solutions worked, submit an issue on the issue tracker. When posting logs in an issue, please upload it to some site like <a href="http://www.pastebin.com">Pastebin</a>.</p>
+
+<p><br>
+<br></p>
+
+
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/watsuprico/SteamDesktopAuthenticator">Steam Desktop Authenticator</a> is maintained by <a href="https://github.com/watsuprico">watsuprico</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
