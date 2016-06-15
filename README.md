@@ -27,7 +27,7 @@
   - Visit [the releases page](https://github.com/watsuprico/SteamDesktopAuthenticator/releases) and download the [latest release](https://github.com/watsuprico/SteamDesktopAuthenticator/releases/latest). (Should be named SDA_X_X_X_X.zip)
   - Extract the files inside the zip anywhere on your computer, (the desktop is a good example). Please remember to keep the files save, as these allow you to login to your account.
   - Run 'Steam Desktop Authenticator.exe', allow 'vcredist_x86.exe' to run and install, (needed for the trade confirmations browser), and click next to setup your account. <img src="http://i.imgur.com/lRGJ7f8.png"/>
-   - Login to Steam and follow the instructions to set it up. <b><i>Please know that you'll need a way of recieving SMS messages. <a href="google.com/voice">Google Voice</a> offers this for free.</b></i>
+   - Login to Steam and follow the instructions to set it up. <b><i>Please know that you'll need a way of recieving SMS messages. <a href="https://google.com/voice">Google Voice</a> offers this for free.</b></i>
    - After setting your account up, you'll be asked to enable encryption. While not necessary, it is recommended you both enable encryption and use a different password then the one for Steam. <img src="http://i.imgur.com/OtRTW48.png"/>
    - For your safety, remember to get [Steam Guard backup codes](https://store.steampowered.com/twofactor/manage) and make a backup of SDA!
 
